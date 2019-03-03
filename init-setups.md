@@ -19,7 +19,9 @@ REACTE_APP_FIREBASE_APIKEY="your-apiKey"
 REACTE_APP_FIREBASE_DOMAIN="your-authDomain"
 REACTE_APP_FIREBASE_DATABASE="your-databaseURL"
 ```
-You don't need remain config value if you don't plan on using other Firebase services (Firebase requires databaseURL event though you don't use Firebase Realtime Database)
+**Note**: *REACTE_APP_FIREBASE_APIKEY is also used for generate token for testing api*
+
+You don't need remain config value if you don't plan on using other Firebase services (Firebase requires databaseURL even though you don't use Firebase Realtime Database)
 
 #### Firebase Service accounts for APIs
 APIs need a token id to [verify](https://firebase.google.com/docs/auth/admin/verify-id-tokens) logged in users, to [create a custom token](https://firebase.google.com/docs/auth/admin/create-custom-tokens) for local development and testing (this custom token is used to exchange a signed token), a service account JSON file is required
