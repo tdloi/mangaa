@@ -36,6 +36,8 @@ def exchange_custom_token(custom_token):
     url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key="
     key = os.environ.get('REACTE_APP_FIREBASE_APIKEY')
     token = requests.post(f'{url}{key}', data=body).json()
+    if token.get('error'):
+        raise ValueError(token)
     return token
 
 
