@@ -12,4 +12,7 @@ def create_app(config=None):
     from .models import db
     db.init_app(app)
 
+    from .schema import ma
+    ma.init_app(app)
+
     return app
