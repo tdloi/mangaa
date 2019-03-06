@@ -12,7 +12,7 @@ fake = Faker()
 
 TOTAL_TAG = 50  # <=, due to tag name must be uniqued
 TOTAL_AUTHOR = 50
-TOTAL_ARTISH = 50
+TOTAL_ARTIST = 50
 
 TOTAL_USER = 50  # <=, due to username must be uniqued
 TOTAL_MANGA = 30
@@ -56,21 +56,21 @@ tags = [
 db.session.bulk_save_objects(tags)
 db.session.commit()
 
-print("--- Create Author/Artish ---")
+print("--- Create Author/Artist ---")
 authors = [
     Author(
         name=fake.name(),
     ) for i in range(TOTAL_AUTHOR)
 ]
-artishes = [
+artists = [
     Author(
         name=fake.name(),
         is_author=False,
-        is_artish=True,
-    ) for i in range(TOTAL_ARTISH)
+        is_artist=True,
+    ) for i in range(TOTAL_ARTIST)
 ]
 db.session.bulk_save_objects(authors)
-db.session.bulk_save_objects(artishes)
+db.session.bulk_save_objects(artists)
 db.session.commit()
 
 print("--- Create Manga ---")
@@ -78,7 +78,7 @@ mangas = list()
 users = User.query.all()
 tags = Tag.query.all()
 authors = Author.query.filter_by(is_author=True).all()
-artishes = Author.query.filter_by(is_artish=True).all()
+artists = Author.query.filter_by(is_artist=True).all()
 for i in range(TOTAL_MANGA):
     manga = Manga(
         title=' '.join(fake.words(randint(2, 12))),
@@ -86,7 +86,7 @@ for i in range(TOTAL_MANGA):
         description=fake.sentence(30),
     )
     manga.authors.append(choice(authors))
-    manga.authors.append(choice(artishes))
+    manga.authors.append(choice(artists))
     manga.tags.extend(sample(tags, randint(1, len(tags))))
     manga.users.extend(sample(users, randint(1, len(users))))
     mangas.append(manga)

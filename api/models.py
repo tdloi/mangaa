@@ -25,7 +25,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
     is_author = db.Column(db.Boolean, default=True)
-    is_artish = db.Column(db.Boolean)
+    is_artist = db.Column(db.Boolean)
 
 
 authors = db.Table(
