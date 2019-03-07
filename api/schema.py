@@ -1,7 +1,7 @@
 from flask_marshmallow import Marshmallow, base_fields
-from marshmallow import pre_load, pre_dump
+from marshmallow import pre_dump, pre_load
 
-from .models import Author, Images, Manga, Tag, User, Chapter
+from .models import Author, Chapter, Images, Manga, Tag, User
 
 ma = Marshmallow()
 
@@ -63,6 +63,7 @@ class UserSchema(ma.ModelSchema):
     class Meta:
         model = User
         exclude = ('chapters',)
+    mangas = ma.Nested(MangaBaseSchema, many=True)
 
 
 # init schema, include this insteead of Schema class
