@@ -15,4 +15,7 @@ def create_app(config=None):
     from .schema import ma
     ma.init_app(app)
 
+    from .v1 import init_blueprint
+    init_blueprint(app)
+
     return app
