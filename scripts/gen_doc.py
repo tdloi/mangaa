@@ -1,3 +1,7 @@
+"""
+Generate document from function docstring that registed with route decorator
+in application blueprint.
+"""
 import json
 from os import path as _path
 from pprint import pprint
@@ -14,7 +18,7 @@ with open(_path.join(ROOT, 'api_docs/template.md')) as f:
 
 
 def check_key(obj, func):
-    "Ensure on keys are available"
+    "Ensure all keys are available"
     keys = [
         'endpoint',
         'method',
@@ -44,11 +48,17 @@ for func_name in app.view_functions.keys():
         doc = yaml.load(func.__doc__)
         check_key(doc, func_name)
 
-        # check if there is a object in reponse,
-        # it is key on many-many relationships
+        # check if there is a object in reponse, if so, it is a many-to-many
+        # relationships so it needs to return as list
         for k, v in doc['response'].items():
             if type(v) is dict:
                 doc['response'][k] = [v]
+
+        # fill description key when `spread` into template.subtitle to avoid
+        # using safe_subtitle, description is optional, because the REST
+        # endpoint is self-explained in itself
+        if not doc.get('description'):
+            doc['description'] = ''
 
         # keep track of endpoint and method to avoid repeat
         key = f"{doc['endpoint']}.{doc['method']}"
@@ -81,7 +91,8 @@ for bp, docs in list_doc.items():
         for e in endpoints:
             doc = docs[e]
             doc['response'] = json.dumps(doc['response'], indent=2)
-            # create table for param
+            # table header has already defined in template,
+            # make dict in param render as table body
             doc['param'] = '\n'.join(f'{k} | {v}' for k, v in doc['param'].items())
             doc['error'] = '\n'.join(
                 f'**{code}**\n```json\n{json.dumps(response, indent=2)}\n```'
