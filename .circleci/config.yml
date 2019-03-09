@@ -32,7 +32,7 @@ jobs:
           name: publish
           command: |
             # check if there is any changes
-            if [[ $(git ls-files -m) ]]; then 
+            if [[ $(git status --short) ]]; then 
               git add api_docs
               git commit -m "[ci skip] Auto build api_docs from $CIRCLE_SHA1"
               git push origin $CIRCLE_BRANCH
