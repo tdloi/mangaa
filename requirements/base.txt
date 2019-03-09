@@ -4,6 +4,7 @@
 #
 #    pip-compile requirements/base.in
 #
+alembic==1.0.8
 cachecontrol==0.12.5      # via firebase-admin
 cachetools==3.1.0         # via google-auth
 certifi==2018.11.29       # via requests
@@ -24,7 +25,8 @@ grpcio==1.19.0            # via google-api-core
 idna==2.8                 # via requests
 itsdangerous==1.1.0       # via flask
 jinja2==2.10              # via flask
-markupsafe==1.1.1         # via jinja2
+mako==1.0.7               # via alembic
+markupsafe==1.1.1         # via jinja2, mako
 marshmallow-sqlalchemy==0.15.0
 marshmallow==2.18.1       # via flask-marshmallow, marshmallow-sqlalchemy
 msgpack==0.6.1            # via cachecontrol
@@ -32,10 +34,12 @@ protobuf==3.7.0           # via google-api-core, googleapis-common-protos
 psycopg2==2.7.7
 pyasn1-modules==0.2.4     # via google-auth
 pyasn1==0.4.5             # via pyasn1-modules, rsa
+python-dateutil==2.8.0    # via alembic
+python-editor==1.0.4      # via alembic
 pytz==2018.9              # via google-api-core, google-cloud-firestore
 requests==2.21.0
 rsa==4.0                  # via google-auth
-six==1.12.0               # via firebase-admin, flask-marshmallow, google-api-core, google-auth, google-resumable-media, grpcio, protobuf
-sqlalchemy==1.3.0         # via flask-sqlalchemy, marshmallow-sqlalchemy
+six==1.12.0               # via firebase-admin, flask-marshmallow, google-api-core, google-auth, google-resumable-media, grpcio, protobuf, python-dateutil
+sqlalchemy==1.3.0         # via alembic, flask-sqlalchemy, marshmallow-sqlalchemy
 urllib3==1.24.1           # via requests
 werkzeug==0.14.1          # via flask
