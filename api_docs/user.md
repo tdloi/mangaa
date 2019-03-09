@@ -1,5 +1,5 @@
-- [`/user`](#/user)
-  + [GET](#GET-/user)
+- [`/user`](#user)
+  + [GET](#GET-user)
 
 ## GET `/user`
 

@@ -1,5 +1,5 @@
-- [`/manga`](#/manga)
-  + [GET](#GET-/manga)
+- [`/manga`](#manga)
+  + [GET](#GET-manga)
 
 ## GET `/manga`
 
