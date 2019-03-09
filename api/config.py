@@ -2,12 +2,12 @@ from os import environ
 
 
 def postgres_uri():
-    user = environ.get('POSTGRES_USER')
+    user = environ.get('POSTGRES_USER', 'postgres')
     password = environ.get('POSTGRES_PASSWORD')
-    host = environ.get('POSTGRES_HOST')
-    port = environ.get('POSTGRES_PORT')
-    db = environ.get('POSTGRES_DB')
-    return f'postgresql+://{user}:{password}@{host}:{port}/{db}'
+    host = environ.get('POSTGRES_HOST', 'localhost')
+    port = environ.get('POSTGRES_PORT', '5432')
+    db = environ.get('POSTGRES_DB', 'postgres')
+    return f'postgresql://{user}:{password}@{host}:{port}/{db}'
 
 
 class Config:
