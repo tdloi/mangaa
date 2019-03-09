@@ -1,0 +1,49 @@
+version: 2.1
+jobs:
+
+  build-api_docs:
+    docker:
+      - image: python:3.6
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1_dependencies-{{ checksum "requirements/base.txt" }}
+          - v1_dependencies-
+      - restore_cache:
+          key: v1_dependencies-{{ checksum "requirements/base.txt" }}
+          path:
+          - "~/.cache/pip"
+      - run:
+          name: Install dependencies
+          command: pip install -r requirements/base.txt && pip install pyyaml
+      - run:
+          name: Build docs
+          command: python scripts/gen_doc.py
+      - run:
+          name: Config git
+          command: |
+            git config user.email "$GH_EMAIL"
+            git config user.name "$GH_NAME"
+      - add_ssh_keys:
+          fingerprints:
+            - "c9:af:55:cd:e9:8b:96:e1:35:7f:24:b0:70:fd:4b:e1"
+      - run:
+          name: publish
+          command: |
+            # check if there is any changes
+            if [[ $(git ls-files -m) ]]; then 
+              git add api_docs
+              git commit -m "[ci skip] Auto build api_docs from $CIRCLE_SHA1"
+              git push origin $CIRCLE_BRANCH
+            else
+              exit 0
+            fi
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build-api_docs:
+          context: gh-tdloi
+

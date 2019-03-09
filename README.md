@@ -1,6 +1,6 @@
 # Mangaa
 [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/tdloi/mangaa/blob/master/LICENSE)
-![react](https://img.shields.io/badge/react-16.8-blue.svg) ![python](https://img.shields.io/badge/python-3.6-blue.svg)
+![react](https://img.shields.io/badge/react-16.8-blue.svg) ![python](https://img.shields.io/badge/python-3.6-blue.svg) [![CircleCI](https://circleci.com/gh/tdloi/mangaa/tree/master.svg?style=svg)](https://circleci.com/gh/tdloi/mangaa/tree/master)
 
 ## Table of contents
 1. [Pre-requirements](#pre-requirements)
