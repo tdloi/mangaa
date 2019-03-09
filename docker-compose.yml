@@ -1,4 +1,4 @@
-version: "3"
+version: "3.1"
 services:   
   nginx:
     image: nginx:latest
@@ -15,9 +15,18 @@ services:
       dockerfile: docker/api/Dockerfile
     volumes:
       - ./api:/src/api
+      - ./alembic.ini:/src/alembic.ini
       - ./docker/uwsgi/uwsgi.ini:/src/uwsgi.ini
     env_file: 
       - .env
     expose:
       - 5000
+    depends_on:
+      - db
     command: uwsgi --ini uwsgi.ini
+
+  db:
+    image: postgres:10-alpine
+    restart: always
+    env_file:
+      - .env
