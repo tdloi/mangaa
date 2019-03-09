@@ -11,7 +11,28 @@ def postgres_uri():
 
 
 class Config:
-    SECRET_KEY = environ.get('FLASK_SECRET')
-    DEBUG = environ.get('FLASK_DEBUG', False)
-    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', postgres_uri())
+    SECRET_KEY = 'secret-key'
+    DEBUG = False
+    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', 'sqlite:////tmp/sqlite.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = environ.get('SQLALCHEMY_TRACK_MODIFICATIONS', False)
+
+
+class DevConfig(Config):
+    DEBUG = True
+
+
+class TestConfig(Config):
+    TESTING = True
+
+
+class ProdConfig(Config):
+    SECRET_KEY = environ.get('FLASK_SECRET')
+    SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', postgres_uri())
+
+
+configs = {
+    'dev': DevConfig,
+    'test': TestConfig,
+    'prod': ProdConfig,
+    'default': ProdConfig,
+}
