@@ -45,12 +45,24 @@ class Chapter(db.Model):
     manga_id = db.Column(db.Integer, db.ForeignKey('manga.id'), nullable=False)
 
 
+users_chapter = db.Table(
+    'users_chapter',
+    db.Column('user_uid', db.Integer, db.ForeignKey('user.uid'), primary_key=True),
+    db.Column('chapter_id', db.Integer, db.ForeignKey('chapter.id'), primary_key=True),
+    db.Column('read', db.Boolean),
+)
+
+
 class User(db.Model):
     uid = db.Column(db.String, primary_key=True)
     username = db.Column(db.String, unique=True)  # display on comment
     avatar = db.Column(db.String)
 
-    chapters = db.relationship('Chapter', backref='user', lazy='subquery')
+    uploaded_chapters = db.relationship('Chapter', backref='user', lazy='subquery')
+    read_chapters = db.relationship(
+        'Chapter', secondary=users_chapter, lazy='subquery',
+        backref=db.backref('read_by_users', lazy=True)
+    )
 
 
 users_manga = db.Table(

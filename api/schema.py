@@ -62,7 +62,7 @@ class ChapterSchema(ma.ModelSchema):
 class UserSchema(ma.ModelSchema):
     class Meta:
         model = User
-        exclude = ('chapters',)
+        exclude = ('uploaded_chapters', 'read_chapters')
     mangas = ma.Nested(MangaBaseSchema, many=True)
 
 
