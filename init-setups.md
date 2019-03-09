@@ -28,15 +28,16 @@ APIs need a token id to [verify](https://firebase.google.com/docs/auth/admin/ver
 Go to [Service Account](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk), click **Generate new private key** to download a new service account file, save this file as `serviceAccountKey.json` under `data/` folder (*this folder is added to gitignore*)
 
 ## Database
-- Docker-compose
+### Docker-compose
 
-Set `POSTGRES_PASSWORD` and put it in `DATABASE_URL`, view [.env.example](.env.example) (make sure them put them before DATABASE_URL)
+Set `POSTGRES_PASSWORD` and put it in `DATABASE_URL`, view [.env.example](.env.example) (make sure put them before DATABASE_URL)
 
 If you also want to change username, database name, change DATABASE_URL bases on their values (read [postgres doc on docker](https://hub.docker.com/_/postgres) for more info)
 
-`DATABASE_URL`=postgresql://`POSTGRES_USER`:`POSTGRES_PASSWORD`@db:5432/`POSTGRES_DB`
+<pre>DATABASE_URL=postgresql://<b>POSTGRES_USER</b>:<b>POSTGRES_PASSWORD</b>@db:5432/<b>POSTGRES_DB</b>
+</pre>
 
-- Gunicorn
+### Gunicorn
 
 You can use `SQLite` for database, set `DATABASE_URL=sqlite:///tmp/sqlite.db` will save `sqlite.db` file to `tmp` folder
 
