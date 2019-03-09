@@ -78,11 +78,12 @@ for bp, docs in list_doc.items():
     toc = list()
     for e in endpoints:
         path, method = e.split('.')
-        toc_link = '- ' + markdown_headlink(f"`{path}`", path)
+        path_link = path.replace('/', '')  # github link don't work if link contains /
+        toc_link = '- ' + markdown_headlink(f"`{path}`", path_link)
         if toc_link not in toc:
             toc.append(toc_link)
         toc.append(
-            '  + ' + markdown_headlink(method, f'{method}-{path}')
+            '  + ' + markdown_headlink(method, f'{method}-{path_link}')
         )
 
     with open(_path.join(ROOT, 'api_docs', f'{bp}.md'), 'w') as f:
