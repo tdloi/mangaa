@@ -47,7 +47,7 @@ class Chapter(db.Model):
 
 users_chapter = db.Table(
     'users_chapter',
-    db.Column('user_uid', db.Integer, db.ForeignKey('user.uid'), primary_key=True),
+    db.Column('user_uid', db.String, db.ForeignKey('user.uid'), primary_key=True),
     db.Column('chapter_id', db.Integer, db.ForeignKey('chapter.id'), primary_key=True),
     db.Column('read', db.Boolean),
 )
@@ -67,7 +67,7 @@ class User(db.Model):
 
 users_manga = db.Table(
     'users_manga',
-    db.Column('user_uid', db.Integer, db.ForeignKey('user.uid'), primary_key=True),
+    db.Column('user_uid', db.String, db.ForeignKey('user.uid'), primary_key=True),
     db.Column('manga_id', db.Integer, db.ForeignKey('manga.id'), primary_key=True),
     db.Column('rating', db.Integer),
     db.Column('subcribed', db.Boolean),
