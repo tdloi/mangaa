@@ -22,7 +22,6 @@ def check_key(obj, func):
     keys = [
         'endpoint',
         'method',
-        'param',
         'response',
         'error'
     ]
@@ -60,6 +59,10 @@ for func_name in app.view_functions.keys():
         if not doc.get('description'):
             doc['description'] = ''
 
+        # Some routes like GET routes do not need request body
+        if not doc.get('param'):
+            doc['param'] = ''
+
         # keep track of endpoint and method to avoid repeat
         key = f"{doc['endpoint']}.{doc['method']}"
         if key in endpoint_list:
@@ -92,9 +95,12 @@ for bp, docs in list_doc.items():
         for e in endpoints:
             doc = docs[e]
             doc['response'] = json.dumps(doc['response'], indent=2)
-            # table header has already defined in template,
-            # make dict in param render as table body
-            doc['param'] = '\n'.join(f'{k} | {v}' for k, v in doc['param'].items())
+            if type(doc['param']) == dict:
+                # make dict in param render as table body
+                doc['param'] = \
+                    'param | type\n' + \
+                    '--- | ---\n' + \
+                    '\n'.join(f'{k} | {v}' for k, v in doc['param'].items())
             doc['error'] = '\n'.join(
                 f'**{code}**\n```json\n{json.dumps(response, indent=2)}\n```'
                 for code, response in doc['error'].items()

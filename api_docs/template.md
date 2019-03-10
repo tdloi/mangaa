@@ -1,8 +1,6 @@
 ## $method `$endpoint`
 $description
 ### Param
-parem | type
---- | ---
 $param
 
 ### Response
