@@ -49,7 +49,6 @@ users_chapter = db.Table(
     'users_chapter',
     db.Column('user_uid', db.String, db.ForeignKey('user.uid'), primary_key=True),
     db.Column('chapter_id', db.Integer, db.ForeignKey('chapter.id'), primary_key=True),
-    db.Column('read', db.Boolean),
 )
 
 

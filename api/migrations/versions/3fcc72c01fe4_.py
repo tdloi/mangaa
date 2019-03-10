@@ -96,7 +96,6 @@ def upgrade():
     op.create_table('users_chapter',
     sa.Column('user_uid', sa.String(), nullable=False),
     sa.Column('chapter_id', sa.Integer(), nullable=False),
-    sa.Column('read', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['chapter_id'], ['chapter.id'], ),
     sa.ForeignKeyConstraint(['user_uid'], ['user.uid'], ),
     sa.PrimaryKeyConstraint('user_uid', 'chapter_id')
