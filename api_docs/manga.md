@@ -4,7 +4,7 @@
 ## GET `/manga`
 
 ### Param
-parem | type
+param | type
 --- | ---
 id | int
 

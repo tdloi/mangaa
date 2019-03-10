@@ -4,7 +4,7 @@
 ## GET `/user`
 
 ### Param
-parem | type
+param | type
 --- | ---
 uid | string
 
