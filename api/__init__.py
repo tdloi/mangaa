@@ -10,6 +10,8 @@ def create_app(config=None):
     env = environ.get('FLASK_ENV', 'default')
     if not config:
         config = configs[env]
+    elif type(config) == str:
+        config = configs.get(config, config['default'])
     app.config.from_object(config)
 
     from .models import db
