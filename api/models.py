@@ -64,13 +64,13 @@ class User(db.Model):
     )
 
 
-users_manga = db.Table(
-    'users_manga',
-    db.Column('user_uid', db.String, db.ForeignKey('user.uid'), primary_key=True),
-    db.Column('manga_id', db.Integer, db.ForeignKey('manga.id'), primary_key=True),
-    db.Column('rating', db.Integer),
-    db.Column('subcribed', db.Boolean),
-)
+class UsersManga(db.Model):
+    user_uid = db.Column(db.String, db.ForeignKey('user.uid'), primary_key=True)
+    manga_id = db.Column(db.Integer, db.ForeignKey('manga.id'), primary_key=True)
+    rating = db.Column(db.Integer, nullable=True)
+    subcribed = db.Column(db.Boolean, nullable=True)
+
+    user = db.relationship('User', backref='mangas')
 
 
 class Manga(db.Model):
@@ -91,10 +91,7 @@ class Manga(db.Model):
         'Author', secondary=authors, lazy='subquery',
         backref=db.backref('mangas', lazy=True)
     )
-    users = db.relationship(
-        'User', secondary=users_manga, lazy='subquery',
-        backref=db.backref('mangas', lazy=True)
-    )
+    users = db.relationship('UsersManga', backref='mangas')
 
 
 class Images(db.Model):
