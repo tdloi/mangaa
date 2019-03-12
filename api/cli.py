@@ -22,7 +22,7 @@ def _bulk_insert(_list):
         exit(0)
 
 
-@generate_db.command('data')
+@generate_db.command('db')
 @click.option('--total', default=40, help='Number of record')
 @click.option(
     '--all-chapters', is_flag=False,
@@ -97,7 +97,7 @@ def generate_data(total, all_chapters):
     print('Added Manga Rating')
 
 
-@generate_db.command('test')
+@generate_db.command('testdb')
 def generate_test_data():
     """Generate minimum records use for testing"""
     print('=== Generating Users, Tags, Authors, Artists ===')
