@@ -29,10 +29,32 @@ jobs:
               exit 0
             fi
 
+  test-api:
+    docker:
+      - image: tdloi/mangaa
+      - image: postgres:10-alpine
+
+    steps:
+      - checkout
+      - run:
+          name: Setup Enviroment Variables
+          command: |
+            echo 'export DATABASE_URL=postgresql://postgres@localhost:5432/postgres' >> $BASH_ENV
+            echo 'export FLASK_APP=api' >> $BASH_ENV
+      - run:
+          name: Setup DB
+          command: alembic upgrade heads && flask gen testdb
+      - run:
+          name: Runninig test
+          command: |
+            pytest
+            
+            
 workflows:
   version: 2
   build:
     jobs:
       - build-api_docs:
           context: gh-tdloi
+      - test-api
 
