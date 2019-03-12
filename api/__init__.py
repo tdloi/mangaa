@@ -20,6 +20,9 @@ def create_app(config=None):
     from .schema import ma
     ma.init_app(app)
 
+    from .cli import generate_db
+    app.cli.add_command(generate_db)
+
     from .v1 import init_blueprint
     init_blueprint(app)
 
