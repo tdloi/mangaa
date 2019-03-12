@@ -3,20 +3,9 @@ jobs:
 
   build-api_docs:
     docker:
-      - image: python:3.6
+      - image: tdloi/mangaa
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1_dependencies-{{ checksum "requirements/base.txt" }}
-          - v1_dependencies-
-      - restore_cache:
-          key: v1_dependencies-{{ checksum "requirements/base.txt" }}
-          path:
-          - "~/.cache/pip"
-      - run:
-          name: Install dependencies
-          command: pip install -r requirements/base.txt && pip install pyyaml
       - run:
           name: Build docs
           command: python scripts/gen_doc.py
