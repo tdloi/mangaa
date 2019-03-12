@@ -10,15 +10,6 @@ from api.models import *
 fake = Faker()
 
 
-def _get_epoch():
-    return timegm(gmtime())
-
-
-def _rand_epoch():
-    epoch = _get_epoch()
-    return randint(epoch - 8640000, epoch)
-
-
 def _get_image(size="1000x1400", sig=None):
     """
     Shortcut for return an unsplash featured image with sig, sig is necessary to
@@ -139,7 +130,6 @@ def gen_chapter(chap_per_manga, list_manga, list_users, min_chapter=None):
                 title=fake.sentence(),
                 vol=int(i/10),
                 chapter=i,
-                created=_rand_epoch(),
                 uploader=choice(list_users).uid,
                 manga_id=manga.id,
             ) for i in range(n)
@@ -179,7 +169,6 @@ def _gen_image(num_per_item, _list, is_covers=True, _min=None, images_list=None)
                 url=url,
                 id_manga=manga_id,
                 id_chapter=chapter_id,
-                created=_rand_epoch(),
                 order=i,
             ) for i, url in enumerate(urls, start=1)
         ])
