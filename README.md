@@ -46,7 +46,7 @@ gunicorn "app:create_app()"
 #### `flask gen testdb`
 Generate a minium records use for testing
 #### `flask gen db`
-Similar as `flask gen testdb` but create full set of data, be aware that it will create **a huge mount** of images
+Similar as `flask gen testdb` but create full set of data, be aware that it will create **a huge mount** of records in Images table
 #### scripts `gen_doc`
 Generate a `.md` file for each [Blueprint](http://flask.pocoo.org/docs/dev/blueprints/), it will read all functions [docstring](https://www.python.org/dev/peps/pep-0257/) inside the blueprint that has `@route` [decorator](https://www.python.org/dev/peps/pep-0318/)
 ### custom scripts
