@@ -11,7 +11,7 @@ def create_app(config=None):
     if not config:
         config = configs[env]
     elif type(config) == str:
-        config = configs.get(config, config['default'])
+        config = configs.get(config, configs['default'])
     app.config.from_object(config)
 
     from .models import db
