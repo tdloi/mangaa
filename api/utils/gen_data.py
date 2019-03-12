@@ -59,6 +59,10 @@ def _add_list_length(_list, length):
     """
     list_len = len(_list)
     temp_list = _list[:]
+
+    if list_len == 0:
+        list_len = 1
+
     if list_len < length:
         n = int(length / list_len) + 1
         temp_list = temp_list * n
@@ -135,7 +139,7 @@ def gen_chapter(chap_per_manga, list_manga, list_users, min_chapter=None):
                 title=fake.sentence(),
                 vol=int(i/10),
                 chapter=i,
-                created=_get_epoch(),
+                created=_rand_epoch(),
                 uploader=choice(list_users).uid,
                 manga_id=manga.id,
             ) for i in range(n)
@@ -144,19 +148,25 @@ def gen_chapter(chap_per_manga, list_manga, list_users, min_chapter=None):
     return chapters
 
 
-def _gen_image(num_per_item, _list, is_covers=True, _min=None):
+def _gen_image(num_per_item, _list, is_covers=True, _min=None, images_list=None):
     """
-    Generate n image for each item in _list or random between _min and num_per_item
+    Generate n image for each item in _list or random between _min and num_per_item,
+    because url images are unique, it accepts list of image object (return from
+    SQLAlchemy query) to avoid duplicate with existed images
     """
     empty_list = (None for i in range(len(_list)))
     list_id = (item.id for item in _list)
 
     list_items = zip(list_id, empty_list)
     if not is_covers:
+        # received list_id are list chapter id
         list_items = zip(empty_list, list_id)
 
     images = []
     url_images = set()
+    if images_list:
+        url_images = {i.url for i in images_list}
+
     for manga_id, chapter_id in list_items:
         n = num_per_item
         if _min:
@@ -169,30 +179,44 @@ def _gen_image(num_per_item, _list, is_covers=True, _min=None):
                 url=url,
                 id_manga=manga_id,
                 id_chapter=chapter_id,
-                created=_get_epoch(),
+                created=_rand_epoch(),
                 order=i,
             ) for i, url in enumerate(urls, start=1)
         ])
     return images
 
 
-def gen_covers(num_per_item, list_manga, _min):
+def gen_covers(num_per_item, list_manga, _min, images_list=None):
     """
     Generate `num_per_item` images for each manga in `list_manga`, if _min
     is set, it will random between `_min` and `num_per_item` images for each
     manga
-    `list_manga` must be a query list return from SQLAlchemy query, so that it
-    can extract id use for foreign keys
+    `list_manga` and `images_list` must be either a query list return from SQLAlchemy query or
+    a list of Manga/Images object so that it can extract id use for foreign keys, and url
+    to avoid primary key error
     """
-    return _gen_image(num_per_item, _list=list_manga, is_covers=True, _min=_min)
+    return _gen_image(
+        num_per_item,
+        _list=list_manga,
+        is_covers=True,
+        _min=_min,
+        images_list=images_list,
+    )
 
 
-def gen_chapter_image(num_per_item, list_chapter, _min):
+def gen_chapter_image(num_per_item, list_chapter, _min, images_list=None):
     """
     Generate `num_per_item` images for each chapter in `list_chapter`, if _min
     is set, it will random between `_min` and `num_per_item` images for each
     chapter
-    `list_chapter` must be a query list return from SQLAlchemy query, so that it
-    can extract id use for foreign keys
+    `list_manga` and `images_list` must be either a query list return from SQLAlchemy query or
+    a list of Manga/Images object so that it can extract id use for foreign keys, and url
+    to avoid primary key error
     """
-    return _gen_image(num_per_item, _list=list_chapter, is_covers=False, _min=_min)
+    return _gen_image(
+        num_per_item,
+        _list=list_chapter,
+        is_covers=False,
+        _min=_min,
+        images_list=images_list,
+    )
