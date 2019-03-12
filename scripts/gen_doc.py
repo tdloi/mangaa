@@ -51,6 +51,11 @@ for func_name in app.view_functions.keys():
         # relationships so it needs to return as list
         for k, v in doc['response'].items():
             if type(v) is dict:
+                # check again nested dict
+                # for: tags in manga, manga list in result
+                for vk, vv in v.items():
+                    if type(vv) is dict:
+                        doc['response'][k][vk] = [vv]
                 doc['response'][k] = [v]
 
         # fill description key when `spread` into template.subtitle to avoid
