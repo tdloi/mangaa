@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
+from .utils.time_utils import epoch_time
+
 db = SQLAlchemy()
 
 
@@ -40,7 +42,7 @@ class Chapter(db.Model):
     title = db.Column(db.String, nullable=False)
     vol = db.Column(db.Float)
     chapter = db.Column(db.Float, nullable=False)
-    created = db.Column(db.Integer)  # epoch
+    created = db.Column(db.Integer, default=epoch_time)
     uploader = db.Column(db.String, db.ForeignKey('user.uid'), nullable=False)
     manga_id = db.Column(db.Integer, db.ForeignKey('manga.id'), nullable=False)
 
@@ -79,6 +81,7 @@ class Manga(db.Model):
     alt_titles = db.Column(db.String)
     description = db.Column(db.String)
     cover = db.Column(db.String)  # url of current manga cover
+    created = db.Column(db.Integer, default=epoch_time)
 
     chapters = db.relationship('Chapter', backref='manga', lazy=True)
     covers = db.relationship('Images', backref='manga', lazy=True)
@@ -96,7 +99,7 @@ class Manga(db.Model):
 
 class Images(db.Model):
     url = db.Column(db.String, primary_key=True)  # File key when upload to S3
-    created = db.Column(db.Integer)  # epoch
+    created = db.Column(db.Integer, default=epoch_time)
     id_manga = db.Column(db.Integer, db.ForeignKey('manga.id'))
     id_chapter = db.Column(db.Integer, db.ForeignKey('chapter.id'))
     order = db.Column(db.Integer)
