@@ -23,10 +23,12 @@ services:
       - 5000
     depends_on:
       - db
-    command: uwsgi --ini uwsgi.ini
+    command: uwsgi --ini uwsgi.ini --py-autoreload 1
 
   db:
     image: postgres:10-alpine
     restart: always
     env_file:
       - .env
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

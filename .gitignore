@@ -35,3 +35,6 @@ __pycache__/
 
 # data for local development (serviceAccount)
 data/
+postgres_data/
+# sqlite
+*.db
