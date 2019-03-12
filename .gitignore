@@ -36,5 +36,6 @@ __pycache__/
 # data for local development (serviceAccount)
 data/
 postgres_data/
+postgres_test/
 # sqlite
 *.db

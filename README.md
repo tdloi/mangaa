@@ -5,15 +5,19 @@
 ## Table of contents
 1. [Pre-requirements](#pre-requirements)
 2. [Run project](#run-project)
-3. [Configurations](#configurations)
-3. [License](#license)
+3. [Testing](#testing)
+4. [Configurations](#configurations)
+5. [License](#license)
 
 ## Pre-requirements
 Read [init setups](init-setups.md) to set up required enviroment variables and data for local development
 
 ## Run project
 ### Using docker-compose
+
 ```bash
+# create postgres_data folder before running compose for persistent data on compose down
+
 # sudo command may be need (linux)
 # remove -d if you want to view log on console
 docker-compose up -d
@@ -42,6 +46,12 @@ alembic upgrade heads
 flask gen testdb
 gunicorn "app:create_app()"
 ```
+## Testing
+### API test with pytest
++ Create `postgres_test` folder
++ Run test compose in detach mode: `docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d`
++ Run test: `docker-compose run --rm api pytest`
+
 ## Commands and Scripts
 #### `flask gen testdb`
 Generate a minium records use for testing
@@ -49,7 +59,7 @@ Generate a minium records use for testing
 Similar as `flask gen testdb` but create full set of data, be aware that it will create **a huge mount** of records in Images table
 #### scripts `gen_doc`
 Generate a `.md` file for each [Blueprint](http://flask.pocoo.org/docs/dev/blueprints/), it will read all functions [docstring](https://www.python.org/dev/peps/pep-0257/) inside the blueprint that has `@route` [decorator](https://www.python.org/dev/peps/pep-0318/)
-### custom scripts
+#### custom scripts
 You can create your own custom scripts and put it under `scripts` folder, for scripts requires [application context](http://flask.pocoo.org/docs/dev/appcontext/), import `init` to push the application context, if you need to access `app`, use `from init import app`.
 
 ## Configurations

@@ -15,6 +15,7 @@ services:
       dockerfile: docker/api/Dockerfile
     volumes:
       - ./api:/src/api
+      - ./api_tests:/src/api_tests
       - ./alembic.ini:/src/alembic.ini
       - ./docker/uwsgi/uwsgi.ini:/src/uwsgi.ini
     env_file: 
