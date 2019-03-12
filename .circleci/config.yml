@@ -16,7 +16,7 @@ jobs:
           - "~/.cache/pip"
       - run:
           name: Install dependencies
-          command: pip install -r requirements/base.txt && pip install pyyaml faker
+          command: pip install -r requirements/base.txt && pip install pyyaml
       - run:
           name: Build docs
           command: python scripts/gen_doc.py
