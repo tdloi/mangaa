@@ -50,6 +50,8 @@ gunicorn "app:create_app()"
 ### API test with pytest
 + Create `postgres_test` folder
 + Run test compose in detach mode: `docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d`
++ Run database migrations: `docker-compose run --rm api alembic upgrade heads`
++ Run init test data: `docker-compose run --rm api flask gen testdb`
 + Run test: `docker-compose run --rm api pytest`
 
 ## Commands and Scripts
