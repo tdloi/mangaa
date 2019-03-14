@@ -56,7 +56,19 @@ class MangaSchema(MangaBaseSchema):
 class ChapterSchema(ma.ModelSchema):
     class Meta:
         model = Chapter
+        exclude = ('read_by_users',)
+    vol = base_fields.Function(
+            lambda obj: None
+            if int(obj.vol) == 0 else (
+                int(obj.vol) if int(obj.vol) == obj.vol else obj.vol
+            )
+          )
+    chapter = base_fields.Function(
+                lambda obj: int(obj.chapter)
+                if int(obj.chapter) == obj.chapter else obj.chapter
+             )
     url = base_fields.Function(lambda obj: f'/manga/{obj.manga.id}/chapter/{obj.id}')
+    manga = ma.Nested(MangaBaseSchema(only=('title', 'url')))
 
 
 class UserSchema(ma.ModelSchema):
