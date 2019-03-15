@@ -15,7 +15,7 @@ def test_manga_index_404(client, endpoint):
 
 def test_manga_index_pagination(client, endpoint):
     total = db.session.query(Manga).count()
-    total_page = int(total/20)
+    total_page = (total // 20) + (total % 20 > 0)
     rv = client.get(f'{endpoint}/manga', json={
         'page': 1,
     })
