@@ -68,6 +68,10 @@ for func_name in app.view_functions.keys():
         if not doc.get('param'):
             doc['param'] = ''
 
+        # top-level array json response by dump many-to-many directly
+        if doc.get('response_type') == 'array':
+            doc['response'] = [doc['response']]
+
         # keep track of endpoint and method to avoid repeat
         key = f"{doc['endpoint']}.{doc['method']}"
         if key in endpoint_list:
