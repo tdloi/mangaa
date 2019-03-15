@@ -3,20 +3,10 @@ import pytest
 from api.models import Manga, db
 
 
-def test_manga_index_400(client, endpoint):
-    rv = client.get(f'{endpoint}/manga', json=dict({
-        'page': 'abc',
-    }))
-    res = rv.get_json()
-
-    assert res['code'] == 400
-    assert res['message'] == 'Invalid page number value'
-
-
 def test_manga_index_404(client, endpoint):
-    rv = client.get(f'{endpoint}/manga', json=dict({
+    rv = client.get(f'{endpoint}/manga', json={
         'page': 9999999999999999,
-    }))
+    })
     res = rv.get_json()
 
     assert res['code'] == 404
@@ -26,9 +16,9 @@ def test_manga_index_404(client, endpoint):
 def test_manga_index_pagination(client, endpoint):
     total = db.session.query(Manga).count()
     total_page = int(total/20)
-    rv = client.get(f'{endpoint}/manga', json=dict({
+    rv = client.get(f'{endpoint}/manga', json={
         'page': 1,
-    }))
+    })
     res = rv.get_json()
 
     assert res['page'] == 1

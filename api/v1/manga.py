@@ -1,12 +1,14 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 
 from ..models import Manga
 from ..schema import mangas_schema
+from ..decorators import load_page_num
 
 bp = Blueprint('manga', __name__)
 
 
 @bp.route('')
+@load_page_num
 def index():
     """
     endpoint: /manga
@@ -45,25 +47,8 @@ def index():
         code: 404
         message: Not Found
     """
-    data = request.get_json()
-    page = None
-
-    if data:
-        page = data.get('page')
-
-    if not page:
-        page = 1
-
-    try:
-        page = int(page)
-    except ValueError:
-        return jsonify({
-            'code': 400,
-            'message': 'Invalid page number value'
-        }), 400
-
     manga = Manga.query.paginate(
-        page=page,
+        page=g.page,
         per_page=20,
         error_out=False
     )
