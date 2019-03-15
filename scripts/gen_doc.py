@@ -110,10 +110,23 @@ for bp, docs in list_doc.items():
                     'param | type\n' + \
                     '--- | ---\n' + \
                     '\n'.join(f'{k} | {v}' for k, v in doc['param'].items())
-            doc['error'] = '\n'.join(
-                f'**{code}**\n```json\n{json.dumps(response, indent=2)}\n```'
-                for code, response in doc['error'].items()
-            )
+            error = list()
+            for code, res in doc['error'].items():
+                if res.get('desc'):
+                    desc = '\n' + res['desc'] + '\n'
+                    del res['desc']  # so we can dump as json
+                else:
+                    desc = ''
+
+                error.append(
+                    '**{code}**\n'
+                    '{desc}'
+                    '```json\n'
+                    '{response}\n'
+                    '```'.format(code=code, desc=desc, response=json.dumps(res, indent=2))
+                )
+            doc['error'] = '\n'.join(error)
+
             f.write(template.substitute(
                 **docs[e],
             ))
