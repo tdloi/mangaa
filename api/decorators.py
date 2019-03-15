@@ -2,6 +2,8 @@ from functools import wraps
 
 from flask import g, request, jsonify
 
+from .models import Manga
+
 
 def load_page_num(f):
     """
@@ -32,5 +34,42 @@ def load_page_num(f):
                 'message': 'Invalid page number value'
             }), 400
 
+        return f(*args, **kwargs)
+    return wrapper
+
+
+def load_manga(f):
+    """ Load manga object by query manga_id into g.manga
+    """
+    @wraps(f)
+    def wrapper(manga_id, *args, **kwargs):
+        manga = Manga.query.get(manga_id)
+        if not manga:
+            return jsonify({
+                'code': 404,
+                'message': 'Not Found'
+            }), 404
+
+        g.manga = manga
+        return f(manga_id, *args, **kwargs)
+
+    return wrapper
+
+
+def require_json(f):
+    """
+    Force request header must have content-type application/json and request
+    body must not be empty json
+    """
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if not request.is_json:
+            return 'Bad request', 400
+
+        if not request.get_json():
+            return jsonify({
+                'code': 400,
+                'message': 'No data provided'
+            })
         return f(*args, **kwargs)
     return wrapper
