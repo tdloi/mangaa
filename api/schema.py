@@ -42,7 +42,7 @@ class AuthorSchema(ma.ModelSchema):
 class ImageSchema(ma.ModelSchema):
     class Meta:
         model = Images
-        only = ('url', 'created', 'order')
+        exclude = ('manga',)
 
 
 class MangaSchema(MangaBaseSchema):
