@@ -118,13 +118,13 @@ def generate_data(total, all_chapters):
         except IntegrityError:
             db.session.rollback()
             um = UsersManga.query.filter(and_(
-                    UsersManga.user_uid.like(um.user.uid),
-                    UsersManga.manga_id.like(um.mangas.id)
+                    UsersManga.user_uid == um.user.uid,
+                    UsersManga.manga_id == um.mangas.id
                 )).first()
             um.subscribed = True
             db.session.commit()
     db.session.remove()
-    print('=== Added Following Manga ===')
+    print('Added Following Manga')
 
 
 @generate_db.command('testdb')
@@ -186,8 +186,8 @@ def generate_test_data():
         except IntegrityError:
             db.session.rollback()
             um = UsersManga.query.filter(and_(
-                    UsersManga.user_uid.like(um.user.uid),
-                    UsersManga.manga_id.like(um.mangas.id)
+                    UsersManga.user_uid == um.user.uid,
+                    UsersManga.manga_id == um.mangas.id
                 )).first()
             um.subscribed = True
             db.session.commit()
