@@ -23,7 +23,6 @@ def check_key(obj, func):
         'endpoint',
         'method',
         'response',
-        'error'
     ]
     for key in keys:
         if obj.get(key) is None:
@@ -110,22 +109,26 @@ for bp, docs in list_doc.items():
                     'param | type\n' + \
                     '--- | ---\n' + \
                     '\n'.join(f'{k} | {v}' for k, v in doc['param'].items())
-            error = list()
-            for code, res in doc['error'].items():
-                if res.get('desc'):
-                    desc = '\n' + res['desc'] + '\n'
-                    del res['desc']  # so we can dump as json
-                else:
-                    desc = ''
 
-                error.append(
-                    '**{code}**\n'
-                    '{desc}'
-                    '```json\n'
-                    '{response}\n'
-                    '```'.format(code=code, desc=desc, response=json.dumps(res, indent=2))
-                )
-            doc['error'] = '\n'.join(error)
+            if doc.get('error'):
+                error = list()
+                for code, res in doc['error'].items():
+                    if res.get('desc'):
+                        desc = '\n' + res['desc'] + '\n'
+                        del res['desc']  # so we can dump as json
+                    else:
+                        desc = ''
+
+                    error.append(
+                        '**{code}**\n'
+                        '{desc}'
+                        '```json\n'
+                        '{response}\n'
+                        '```'.format(code=code, desc=desc, response=json.dumps(res, indent=2))
+                    )
+                doc['error'] = '\n'.join(error)
+            else:
+                doc['error'] = ''
 
             f.write(template.substitute(
                 **docs[e],
