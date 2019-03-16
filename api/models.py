@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-from .utils.time_utils import epoch_time
+from .utils.helpers import epoch_time
 
 db = SQLAlchemy()
 
