@@ -33,13 +33,13 @@ def index():
         cover: cover_url
         description: Manga descriptions
         tags:
-            id: 1
-            name: tag_name
-            url: /tag/tag_name
+          id: 1
+          name: tag_name
+          url: /tag/tag_name
         authors:
-            id: 1
-            name: author_name
-            url: /author/author_name
+          id: 1
+          name: author_name
+          url: /author/author_name
     error:
       400:
         code: 400
@@ -108,7 +108,7 @@ def post_manga():
         desc: tags field is not an array of int or tags field contains non-existed tag id
         code: 400
         message: Invalid tags field
-    400:
+      400:
         desc: authors field is not an array of int or authors field contains non-existed authors id
         code: 400
         message: Invalid authors/artists field
