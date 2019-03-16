@@ -70,7 +70,7 @@ class UsersManga(db.Model):
     user_uid = db.Column(db.String, db.ForeignKey('user.uid'), primary_key=True)
     manga_id = db.Column(db.Integer, db.ForeignKey('manga.id'), primary_key=True)
     rating = db.Column(db.Integer, nullable=True)
-    subcribed = db.Column(db.Boolean, nullable=True)
+    subscribed = db.Column(db.Boolean, nullable=True)
 
     user = db.relationship('User', backref='mangas')
 

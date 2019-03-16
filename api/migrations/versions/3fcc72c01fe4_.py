@@ -78,7 +78,7 @@ def upgrade():
     sa.Column('user_uid', sa.String(), nullable=False),
     sa.Column('manga_id', sa.Integer(), nullable=False),
     sa.Column('rating', sa.Integer(), nullable=True),
-    sa.Column('subcribed', sa.Boolean(), nullable=True),
+    sa.Column('subscribed', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['manga_id'], ['manga.id'], ),
     sa.ForeignKeyConstraint(['user_uid'], ['user.uid'], ),
     sa.PrimaryKeyConstraint('user_uid', 'manga_id')
