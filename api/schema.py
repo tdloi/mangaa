@@ -67,7 +67,7 @@ class ChapterSchema(ma.ModelSchema):
                 lambda obj: int(obj.chapter)
                 if int(obj.chapter) == obj.chapter else obj.chapter
              )
-    url = base_fields.Function(lambda obj: f'/manga/{obj.manga.id}/chapter/{obj.id}')
+    url = base_fields.Function(lambda obj: f'/chapter/{obj.id}')
     manga = ma.Nested(MangaBaseSchema(only=('title', 'url')))
 
 
