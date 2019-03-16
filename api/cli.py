@@ -3,6 +3,7 @@ from random import randint, sample
 import click
 from flask.cli import AppGroup
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import and_
 
 from .models import Author, Chapter, Manga, Tag, User, db
 from .utils.gen_data import (UsersManga, gen_author, gen_chapter,
@@ -96,6 +97,35 @@ def generate_data(total, all_chapters):
     db.session.remove()
     print('Added Manga Rating')
 
+    print('=== Generating Following Manga ===')
+    mangas = Manga.query.all()
+    users = User.query.limit(total).all()
+    users_manga = []
+    for u in users:
+        manga = sample(mangas, int(total/2))
+        users_manga.extend(
+            UsersManga(
+                subscribed=True,
+                user=u,
+                mangas=m,
+            ) for m in manga
+        )
+    for um in users_manga:
+        try:
+            db.session.add(um)
+            db.session.commit()
+        # If it existed, just modify it then
+        except IntegrityError:
+            db.session.rollback()
+            um = UsersManga.query.filter(and_(
+                    UsersManga.user_uid.like(um.user.uid),
+                    UsersManga.manga_id.like(um.mangas.id)
+                )).first()
+            um.subscribed = True
+            db.session.commit()
+    db.session.remove()
+    print('=== Added Following Manga ===')
+
 
 @generate_db.command('testdb')
 def generate_test_data():
@@ -127,7 +157,6 @@ def generate_test_data():
         db.session.add(i)
         db.session.commit()
     db.session.remove()
-    print('Added Covers and Chapters Content')
 
     print('=== Generating Manga Rating ===')
     manga = Manga.query.first()
@@ -141,7 +170,28 @@ def generate_test_data():
         db.session.add(um)
         db.session.commit()
     db.session.remove()
-    print('Added Manga Rating')
+
+    print('=== Generating Following Manga ===')
+    user = User.query.first()
+    manga = Manga.query.all()
+    users_manga = [UsersManga(
+        subscribed=True,
+        user=user,
+        mangas=m,
+    ) for m in manga]
+    for um in users_manga:
+        try:
+            db.session.add(um)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            um = UsersManga.query.filter(and_(
+                    UsersManga.user_uid.like(um.user.uid),
+                    UsersManga.manga_id.like(um.mangas.id)
+                )).first()
+            um.subscribed = True
+            db.session.commit()
+    db.session.remove()
 
 
 @generate_db.command('users')
