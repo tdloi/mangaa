@@ -83,7 +83,7 @@ class Manga(db.Model):
     cover = db.Column(db.String)  # url of current manga cover
     created = db.Column(db.Integer, default=epoch_time)
 
-    chapters = db.relationship('Chapter', backref='manga', lazy=True)
+    chapters = db.relationship('Chapter', backref='manga', lazy=True, cascade='all, delete')
     covers = db.relationship('Images', backref='manga', lazy=True)
 
     tags = db.relationship(
@@ -94,12 +94,12 @@ class Manga(db.Model):
         'Author', secondary=authors, lazy='subquery',
         backref=db.backref('mangas', lazy=True)
     )
-    users = db.relationship('UsersManga', backref='mangas')
+    users = db.relationship('UsersManga', backref='mangas', cascade='all, delete')
 
 
 class Images(db.Model):
     url = db.Column(db.String, primary_key=True)  # File key when upload to S3
     created = db.Column(db.Integer, default=epoch_time)
-    id_manga = db.Column(db.Integer, db.ForeignKey('manga.id'))
-    id_chapter = db.Column(db.Integer, db.ForeignKey('chapter.id'))
+    id_manga = db.Column(db.Integer, db.ForeignKey('manga.id', ondelete='CASCADE'))
+    id_chapter = db.Column(db.Integer, db.ForeignKey('chapter.id', ondelete='CASCADE'))
     order = db.Column(db.Integer)
