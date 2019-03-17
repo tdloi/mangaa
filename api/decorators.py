@@ -2,7 +2,7 @@ from functools import wraps
 
 import firebase_admin
 from firebase_admin import auth, credentials
-from flask import g, jsonify, request
+from flask import g, jsonify, request, abort
 
 from .models import Manga, User, db
 
@@ -84,8 +84,11 @@ def load_token(f):
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
-        cred = credentials.Certificate('data/serviceAccountKey.json')
-        default_app = firebase_admin.initialize_app(cred)
+        try:
+            cred = credentials.Certificate('data/serviceAccountKey.json')
+            default_app = firebase_admin.initialize_app(cred)
+        except ValueError:
+            firebase_admin.delete_app(default_app)
         token = request.headers.get('Authorization')
         try:
             encoded_token = auth.verify_id_token(token)
@@ -109,8 +112,11 @@ def require_token(f):
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
-        cred = credentials.Certificate('data/serviceAccountKey.json')
-        default_app = firebase_admin.initialize_app(cred)
+        try:
+            cred = credentials.Certificate('data/serviceAccountKey.json')
+            default_app = firebase_admin.initialize_app(cred)
+        except ValueError:
+            firebase_admin.delete_app(default_app)
         token = request.headers.get('Authorization')
         try:
             encoded_token = auth.verify_id_token(token)
