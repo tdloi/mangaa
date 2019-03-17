@@ -1,8 +1,10 @@
 from functools import wraps
 
-from flask import g, request, jsonify
+from firebase_admin import auth
+from flask import g, jsonify, request
 
 from .models import Manga
+from .utils.token import firebase_init
 
 
 def load_page_num(f):
@@ -71,5 +73,43 @@ def require_json(f):
                 'code': 400,
                 'message': 'No data provided'
             })
+        return f(*args, **kwargs)
+    return wrapper
+
+
+def load_token(f):
+    """
+    Load uid into g.uid by decoding token if it is present in headers
+    """
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        firebase_init()
+        token = request.headers.get('Authorization')
+        try:
+            g.uid = auth.verify_id_token(token)
+        except ValueError:
+            pass
+
+        return f(*args, **kwargs)
+    return wrapper
+
+
+def require_token(f):
+    """
+    Load uid into g.uid by decoding token. Raise 400 Bad Request if token is missing
+    or invalid
+    """
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        firebase_init()
+        token = request.headers.get('Authorization')
+        try:
+            g.uid = auth.verify_id_token(token)
+        except ValueError:
+            return jsonify({
+                'code': 400,
+                'message': 'Token is missing or invalid'
+            }), 400
+
         return f(*args, **kwargs)
     return wrapper
