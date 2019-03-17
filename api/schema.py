@@ -59,7 +59,7 @@ class ChapterSchema(ma.ModelSchema):
         exclude = ('read_by_users',)
     vol = base_fields.Function(
             lambda obj: None
-            if int(obj.vol) == 0 else (
+            if not obj.vol or int(obj.vol) == 0 else (
                 int(obj.vol) if int(obj.vol) == obj.vol else obj.vol
             )
           )
