@@ -1,5 +1,33 @@
 - [`/manga`](#manga)
+  + [DELETE](#DELETE-manga)
   + [GET](#GET-manga)
+  + [POST](#POST-manga)
+- [`/manga/<manga_id>`](#manga<manga_id>)
+  + [GET](#GET-manga<manga_id>)
+- [`/manga/<manga_id>/chapters`](#manga<manga_id>chapters)
+  + [GET](#GET-manga<manga_id>chapters)
+
+## DELETE `/manga`
+
+### Param
+
+
+### Response
+```json
+{
+  "code": 200,
+  "message": "Deleted"
+}
+```
+
+### Error
+**404**
+```json
+{
+  "code": 404,
+  "message": "Not Found"
+}
+```
 
 ## GET `/manga`
 Return a list of manga, if page is not specified or negetive, return first page,
@@ -57,6 +85,140 @@ page (optional) | int
 ```json
 {
   "code": 404,
+  "message": "Not Found"
+}
+```
+
+## POST `/manga`
+
+### Param
+param | type
+--- | ---
+title | str
+alt_titles (opt) | str
+description (opt) | str
+cover | str (url)
+tags | array of int (tag id)
+authors | array of int (authors id)
+
+### Response
+```json
+{
+  "id": 1,
+  "title": "Manga Title",
+  "alt_titles": "Another Manga Title",
+  "url": "/manga/1/manga-title",
+  "cover": "cover_url",
+  "created": 123456789,
+  "description": "manga_description",
+  "tags": [
+    {
+      "id": 1,
+      "name": "manga tag",
+      "url": "/tag/manga-tag"
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "name": "manga author",
+      "url": "/author/1"
+    }
+  ]
+}
+```
+
+### Error
+**400**
+
+authors field is not an array of int or authors field contains non-existed authors id
+```json
+{
+  "code": 400,
+  "message": "Invalid authors/artists field"
+}
+```
+**404**
+```json
+{
+  "code": 404,
+  "message": "Not Found"
+}
+```
+
+## GET `/manga/<manga_id>`
+
+### Param
+
+
+### Response
+```json
+{
+  "id": 1,
+  "title": "Manga Title",
+  "alt_titles": "Another Manga Title",
+  "url": "/manga/1/manga-title",
+  "cover": "cover_url",
+  "created": 123456789,
+  "description": "manga_description",
+  "tags": [
+    {
+      "id": 1,
+      "name": "manga tag",
+      "url": "/tag/manga-tag"
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "name": "manga author",
+      "url": "/author/1"
+    }
+  ]
+}
+```
+
+### Error
+**404**
+```json
+{
+  "code": 404,
+  "message": "Not Found"
+}
+```
+
+## GET `/manga/<manga_id>/chapters`
+
+### Param
+
+
+### Response
+```json
+[
+  {
+    "manga": 1,
+    "lists": [
+      {
+        "id": 1,
+        "created": 123456789,
+        "vol": 1,
+        "chapter": 1,
+        "manga": [
+          {
+            "title": "manga title",
+            "url": "/manga/1/manga-title"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+### Error
+**404**
+```json
+{
   "message": "Not Found"
 }
 ```
