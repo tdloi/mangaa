@@ -15,6 +15,9 @@ class Config:
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = environ.get('DATABASE_URL', 'sqlite:////tmp/sqlite.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = environ.get('SQLALCHEMY_TRACK_MODIFICATIONS', False)
+    CELERY_BROKER_URL = environ.get('CELERY_BROKER_URL')
+    CELERY_RESULT_BACKEND = environ.get('CELERY_RESULT_BACKEND')
+    IMAGES_EXTENSION = environ.get('FLASK_ALLOW_IMAGES_EXTENSION', '.png .jpg .jpeg .webp').split()
 
 
 class DevConfig(Config):

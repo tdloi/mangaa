@@ -1,7 +1,16 @@
 from os import environ
 
-from flask import Flask
-from .config import configs
+from flask import Flask, current_app
+
+from celery import Celery
+from .config import configs, Config
+
+
+celery = Celery(
+        __name__,
+        backend=Config.CELERY_RESULT_BACKEND,
+        broker=Config.CELERY_BROKER_URL,
+    )
 
 
 def create_app(config=None):
@@ -25,5 +34,7 @@ def create_app(config=None):
 
     from .v1 import init_blueprint
     init_blueprint(app)
+
+    celery.conf.update(app.config)
 
     return app

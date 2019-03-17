@@ -17,6 +17,7 @@ services:
       - ./api:/src/api
       - ./api_tests:/src/api_tests
       - ./alembic.ini:/src/alembic.ini
+      - ./data:/src/data
       - ./docker/uwsgi/uwsgi.ini:/src/uwsgi.ini
     env_file: 
       - .env
@@ -24,6 +25,7 @@ services:
       - 5000
     depends_on:
       - db
+      - redis
     command: uwsgi --ini uwsgi.ini --py-autoreload 1
 
   db:
@@ -33,3 +35,9 @@ services:
       - .env
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    restart: always
+    env_file:
+      - .env
