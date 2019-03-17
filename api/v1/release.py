@@ -77,7 +77,7 @@ def get_following():
         message: There are no new chapters available
     """
     list_manga = UsersManga.query.filter(and_(
-        UsersManga.user_uid.like("7bccacf0-8120-4fbd-bc06-b25e636207bd"),
+        UsersManga.user_uid.like(g.uid),
         UsersManga.subscribed.is_(True),
     )).all()
 
