@@ -1,10 +1,10 @@
 from functools import wraps
 
-from firebase_admin import auth
+import firebase_admin
+from firebase_admin import auth, credentials
 from flask import g, jsonify, request
 
-from .models import Manga
-from .utils.token import firebase_init
+from .models import Manga, User, db
 
 
 def load_page_num(f):
@@ -79,14 +79,21 @@ def require_json(f):
 
 def load_token(f):
     """
-    Load uid into g.uid by decoding token if it is present in headers
+    Load uid into g.uid by decoding token if it is present in headers. Create new
+    User record if uid does not exist in database
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
-        firebase_init()
+        cred = credentials.Certificate('data/serviceAccountKey.json')
+        default_app = firebase_admin.initialize_app(cred)
         token = request.headers.get('Authorization')
         try:
-            g.uid = auth.verify_id_token(token)
+            encoded_token = auth.verify_id_token(token)
+            g.uid = encoded_token['uid']
+            if not User.query.get(g.uid):
+                db.session.add(User(uid=g.uid))
+                db.session.commit()
+                db.session.remove()
         except ValueError:
             pass
 
@@ -96,15 +103,22 @@ def load_token(f):
 
 def require_token(f):
     """
-    Load uid into g.uid by decoding token. Raise 400 Bad Request if token is missing
+    Load uid into g.uid by decoding token. Create new User record if uid does not
+    exist in database. Raise 400 Bad Request if token is missing
     or invalid
     """
     @wraps(f)
     def wrapper(*args, **kwargs):
-        firebase_init()
+        cred = credentials.Certificate('data/serviceAccountKey.json')
+        default_app = firebase_admin.initialize_app(cred)
         token = request.headers.get('Authorization')
         try:
-            g.uid = auth.verify_id_token(token)
+            encoded_token = auth.verify_id_token(token)
+            g.uid = encoded_token['uid']
+            if not User.query.get(g.uid):
+                db.session.add(User(uid=g.uid))
+                db.session.commit()
+                db.session.remove()
         except ValueError:
             return jsonify({
                 'code': 400,

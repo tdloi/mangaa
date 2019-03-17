@@ -54,10 +54,3 @@ def create_token(uid, claim=None, service_account_path=None):
     """
     custom_token = create_custom_token(uid, claim, service_account_path)
     return exchange_custom_token(custom_token)
-
-
-def firebase_init():
-    cred = credentials.Certificate('data/serviceAccountKey.json')
-    default_app = firebase_admin.initialize_app(cred)
-    yield default_app
-    firebase_admin.delete_app(default_app)
