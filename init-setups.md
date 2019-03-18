@@ -18,11 +18,11 @@ Go to [Firebase console](https://console.firebase.google.com/) and choose **Add 
 #### Firebase configs for React
 From your firebase project console, choose **Authentication** > **Web Setup**, copy those value to `.env`
 ```
-REACTE_APP_FIREBASE_APIKEY="your-apiKey"
-REACTE_APP_FIREBASE_DOMAIN="your-authDomain"
-REACTE_APP_FIREBASE_DATABASE="your-databaseURL"
+REACT_APP_FIREBASE_APIKEY="your-apiKey"
+REACT_APP_FIREBASE_DOMAIN="your-authDomain"
+REACT_APP_FIREBASE_DATABASE="your-databaseURL"
 ```
-**Note**: *REACTE_APP_FIREBASE_APIKEY is also used for generate token for testing api*
+**Note**: *REACT_APP_FIREBASE_APIKEY is also used for generate token for testing api*
 
 ### Firebase Service accounts for APIs
 APIs need a token id to [verify](https://firebase.google.com/docs/auth/admin/verify-id-tokens) logged in users, to [create a custom token](https://firebase.google.com/docs/auth/admin/create-custom-tokens) for local development and testing (this custom token is used to exchange a signed token), a service account JSON file is required
