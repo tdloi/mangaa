@@ -46,6 +46,8 @@ class Chapter(db.Model):
     uploader = db.Column(db.String, db.ForeignKey('user.uid'), nullable=False)
     manga_id = db.Column(db.Integer, db.ForeignKey('manga.id'), nullable=False)
 
+    lists = db.relationship('Images')
+
 
 users_chapter = db.Table(
     'users_chapter',

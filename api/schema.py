@@ -56,7 +56,7 @@ class MangaSchema(MangaBaseSchema):
 class ChapterSchema(ma.ModelSchema):
     class Meta:
         model = Chapter
-        exclude = ('read_by_users',)
+        exclude = ('read_by_users', 'lists',)
     vol = base_fields.Function(
             lambda obj: None
             if not obj.vol or int(obj.vol) == 0 else (
