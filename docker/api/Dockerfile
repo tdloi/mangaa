@@ -15,6 +15,7 @@ RUN apt-get update && apt-get upgrade -y \
     && cd /tmp/libwebp-1.0.2 \
     && ./configure \
     && make \
-    && make install
+    && make install \
+    && rm -rf /tmp/libwebp*
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
