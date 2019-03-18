@@ -9,8 +9,10 @@ from .models import Author, Chapter, Manga, Tag, User, db
 from .utils.gen_data import (UsersManga, gen_author, gen_chapter,
                              gen_chapter_image, gen_covers, gen_manga, gen_tag,
                              gen_user)
+from .utils.token import create_token
 
-generate_db = AppGroup('gen')
+
+generate = AppGroup('gen')
 
 
 def _bulk_insert(_list):
@@ -23,7 +25,7 @@ def _bulk_insert(_list):
         exit(0)
 
 
-@generate_db.command('db')
+@generate.command('db')
 @click.option('--total', default=40, help='Number of record')
 @click.option(
     '--all-chapters', is_flag=False,
@@ -127,7 +129,7 @@ def generate_data(total, all_chapters):
     print('Added Following Manga')
 
 
-@generate_db.command('testdb')
+@generate.command('testdb')
 def generate_test_data():
     """Generate minimum records use for testing"""
     print('=== Generating Users, Tags, Authors, Artists ===')
@@ -194,7 +196,29 @@ def generate_test_data():
     db.session.remove()
 
 
-@generate_db.command('users')
+@generate.command('token')
+@click.argument('uid')
+@click.option(
+    '--claim', default=None,
+    help="a dict contains custom claim, must be put insde '' to escape string")
+def generate_token(uid, claim):
+    """ Generate firebase token for given uid
+    """
+    print(create_token(uid, claim=claim))
+
+
+@generate.command('idtoken')
+@click.argument('uid')
+@click.option(
+    '--claim', default=None,
+    help="a dict contains custom claim, must be put insde '' to escape string")
+def generate_id_token(uid, claim):
+    """  Generate firebase token and retrieve idToken for given uid
+    """
+    print(create_token(uid, claim=claim)['idToken'])
+
+
+@generate.command('users')
 @click.argument('total')
 def _generate_user(total):
     generate_user(total)
@@ -205,7 +229,7 @@ def generate_user(total):
     _bulk_insert(users)
 
 
-@generate_db.command('tags')
+@generate.command('tags')
 @click.argument('total')
 def _generate_tag(total):
     generate_tags(total)
@@ -216,7 +240,7 @@ def generate_tags(total):
     _bulk_insert(tags)
 
 
-@generate_db.command('author')
+@generate.command('author')
 @click.argument('total')
 @click.option('--is-author', is_flag=True)
 def _generate_authors(total, is_author=True):
@@ -228,7 +252,7 @@ def generate_authors(total, is_author=True):
     _bulk_insert(_list)
 
 
-@generate_db.command('mangas')
+@generate.command('mangas')
 @click.argument('total')
 def _generate_mangas(total):
     generate_mangas(total)
