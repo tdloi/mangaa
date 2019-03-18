@@ -1,3 +1,4 @@
+import os
 from os import environ
 from os.path import splitext
 
@@ -8,7 +9,7 @@ from ..decorators import require_token
 from ..models import Chapter, Images, Manga, db
 from ..schema import chapter_schema, images_schema
 from ..tasks import upload_image
-from ..utils.helpers import generate_expires_field, rand_str, s3_bucket, s3_client
+from ..utils.helpers import generate_expires_field, rand_str, s3_bucket
 
 bp = Blueprint('chapter', __name__)
 
@@ -88,7 +89,7 @@ def create():
                     title=request.form['title'],
                     vol=request.form.get('vol', None),
                     chapter=request.form['chapter'],
-                    manga_id=request.form['manga'],
+                    manga_id=manga_id,
                     uploader=g.uid
                 )
         db.session.add(chapter)
@@ -99,8 +100,10 @@ def create():
             'message': 'Something went wrong',
         }), 500
 
+    if not os.path.exists(f'/tmp/{manga_id}/{chapter.id}'):
+        os.makedirs(f'/tmp/{manga_id}/{chapter.id}')
+
     bucket_name = environ['AWS_S3_BUCKET']
-    location = s3_client().get_bucket_location(Bucket=bucket_name)['LocationConstraint']
 
     list_images = set()
 
@@ -109,14 +112,13 @@ def create():
         # random a unique images url
         while True:
             key = rand_str(64) + ext
+            key = str(manga_id) + '/' + str(chapter.id) + '/' + key
             # Check for exist to avoid override
-            i = Images.query.get(f'https://s3-{location}.amazonaws.com/{bucket_name}/{key}')
+            i = Images.query.get(key)
             if not i:
                 list_images.add(key)
                 break
 
-        # TODO:
-        # handle conflict in a small chance that processing images have the same key
         image.save(f'/tmp/{key}')
 
     task = upload_image.delay(list(list_images), chapter.id)
