@@ -1,10 +1,12 @@
 """ Helper function to create token for local development and testing
 """
 import os
+from os.path import abspath, join
 
 import firebase_admin
 import requests
 from firebase_admin import auth, credentials
+from flask import current_app
 
 
 def create_custom_token(uid, claim=None, service_account_path=None):
@@ -15,8 +17,12 @@ def create_custom_token(uid, claim=None, service_account_path=None):
     service_account_path: path contains service account json file, default on
     `data/serviceAccountKey.json` from project root
     """
+    rootpath = abspath(current_app.root_path + '/..')
     if not service_account_path:
-        service_account_path = 'data/serviceAccountKey.json'
+        service_account_path = join(rootpath, 'data/serviceAccountKey.json')
+    else:
+        service_account_path = abspath(join(rootpath, service_account_path))
+
     cred = credentials.Certificate(service_account_path)
     default_app = firebase_admin.initialize_app(cred)
     custom_token = auth.create_custom_token(uid, developer_claims=claim)
