@@ -104,13 +104,13 @@ def load_token(f):
     return wrapper
 
 
-def require_token(f):
+def require_token(func):
     """
     Load uid into g.uid by decoding token. Create new User record if uid does not
     exist in database. Raise 400 Bad Request if token is missing
     or invalid
     """
-    @wraps(f)
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             firebase_admin.get_app()
@@ -125,9 +125,11 @@ def require_token(f):
                 db.session.add(User(uid=g.uid))
                 db.session.commit()
                 db.session.remove()
-        except ValueError:
-            # TODO: Return JSON error
-            return '', 400
+        except ValueError as e:
+            return jsonify({
+                'code': 400,
+                'message': str(e),
+            }), 400
 
-        return f(*args, **kwargs)
+        return func(*args, **kwargs)
     return wrapper
