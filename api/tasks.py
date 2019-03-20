@@ -3,7 +3,7 @@ from os import environ, remove
 from os.path import exists, splitext
 
 from celery.task.control import revoke
-from flask import current_app, jsonify
+from flask import jsonify
 
 from . import celery, create_app
 from .models import Images, db
@@ -32,7 +32,6 @@ def upload_image(self, list_images, chapter_id):
         s3_bucket().upload_file(
             f'/tmp/{image}', image,
             ExtraArgs={
-                'ACL': 'public-read',
                 'ContentType': f'image/{ext}',
                 'Expires': expires,
             })
@@ -72,7 +71,6 @@ def upload_webp(image, expires):
     s3_bucket().upload_file(
         f'/tmp/{image}.webp', f'{image}.webp',
         ExtraArgs={
-            'ACL': 'public-read',
             'ContentType': 'image/webp',
             'Expires': expires,
         })
