@@ -6,9 +6,9 @@ import styled from 'styled-components';
 const StyledMangaListSection = styled.section`
   padding: 1rem 10px;
   padding-bottom: 2rem;
-  background: ${props => props.theme.background}
+  background: ${props => props.theme.bg}
   > h1 {
-    color: ${props => props.theme.foreground}
+    color: ${props => props.theme.fg}
   }
 `;
 
