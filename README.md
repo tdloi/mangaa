@@ -11,6 +11,7 @@
 ## Prerequisites
 You'll need a [Firebase project](https://firebase.google.com) and Amazon S3 Bucket, copy [`.env.example`](.env.example) to `.env` then ***put its configurations in `.env`***
 
+Download [Service Accounts](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk) and save it in `data/serviceAccountKey.json`
 ## Run project
 ### Client
 ```bash
@@ -35,6 +36,14 @@ docker-compose run --rm api alembic upgrade heads
 
 <details> 
 <summary><b>Without docker-compose</b></summary>
+<b>Start venv and install python packages (python 3.6)</b>
+
+<pre lang="bash">
+python venv -m .venv
+source .venv/bin/activate   // Window: .venv\Scripts\activate.bat
+pip install -r requirements/base.txt
+</pre>
+
 <b>Database</b>
 
 Update <code>DATABASE_URL</code> to approciate value based on <a href="https://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls">SQLAlchemy Database URLS</a>
