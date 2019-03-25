@@ -244,6 +244,7 @@ def get_chapters(manga_id):
         manga:
           title: manga title
           url: /manga/1/manga-title
+          cover: manga_cover_url
     error:
       404:
         message: Not Found

@@ -28,6 +28,7 @@ def get_chapters():
       manga:
         title: manga title
         url: /manga/1/manga-title
+        cover: manga_cover_url
     error:
       404:
         code: 404
@@ -71,6 +72,7 @@ def get_following():
       manga:
         title: manga title
         url: /manga/1/manga-title
+        cover: manga_cover_url
     error:
       404:
         code: 404

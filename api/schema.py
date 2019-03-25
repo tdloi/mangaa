@@ -1,3 +1,5 @@
+from os import environ
+
 from flask_marshmallow import Marshmallow, base_fields
 from marshmallow import pre_dump, pre_load
 
@@ -10,10 +12,15 @@ class MangaBaseSchema(ma.ModelSchema):
     """ Manga Schema removed all many-to-many relationship fields"""
     class Meta:
         model = Manga
-        exclude = ("users", "covers", "chapters", "tags", "authors",)
+        exclude = ("users", "chapters", "tags", "authors",)
 
     url = base_fields.Function(
         lambda obj: f"/manga/{obj.id}/{obj._title}"
+    )
+    cover = base_fields.Function(
+        lambda obj: obj.cover
+        if obj.cover
+        else environ.get('MANGA_COVER_PLACEHOLDER', '/manga-cover.png')
     )
 
     @pre_dump
@@ -68,7 +75,7 @@ class ChapterSchema(ma.ModelSchema):
                 if int(obj.chapter) == obj.chapter else obj.chapter
              )
     url = base_fields.Function(lambda obj: f'/chapter/{obj.id}')
-    manga = ma.Nested(MangaBaseSchema(only=('title', 'url')))
+    manga = ma.Nested(MangaBaseSchema(only=('title', 'url', 'cover',)))
 
 
 class UserSchema(ma.ModelSchema):
