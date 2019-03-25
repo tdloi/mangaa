@@ -206,7 +206,8 @@ authors field is not an array of int or authors field contains non-existed autho
         "manga": [
           {
             "title": "manga title",
-            "url": "/manga/1/manga-title"
+            "url": "/manga/1/manga-title",
+            "cover": "manga_cover_url"
           }
         ]
       }

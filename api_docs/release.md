@@ -28,7 +28,8 @@ total (opt) | int - default 10
     "manga": [
       {
         "title": "manga title",
-        "url": "/manga/1/manga-title"
+        "url": "/manga/1/manga-title",
+        "cover": "manga_cover_url"
       }
     ]
   }
@@ -64,7 +65,8 @@ param | type
     "manga": [
       {
         "title": "manga title",
-        "url": "/manga/1/manga-title"
+        "url": "/manga/1/manga-title",
+        "cover": "manga_cover_url"
       }
     ]
   }
