@@ -2,6 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { ThemeProvider } from 'styled-components';
 import MangaListSection from './index';
+import MangaItem from '../MangaItem';
 import '../../index.css';
 import { theme } from '../../theme';
 
@@ -17,19 +18,36 @@ const mangaList = Array(10).fill(manga);
 
 storiesOf('MangaListSection', module)
   .add('default', () => (
-    <MangaListSection section="Following" lists={mangaList} />
+    <MangaListSection
+      section="Following"
+      lists={mangaList.map(item => (
+        <MangaItem key={item.id} {...item} />
+      ))}
+    />
   ))
   .add('with dark theme', () => (
     <ThemeProvider theme={theme.dark}>
       <MangaListSection
         section="Following"
-        lists={mangaList}
+        lists={mangaList.map(item => (
+          <MangaItem key={item.id} {...item} />
+        ))}
       />
     </ThemeProvider>
   ))
   .add('with two sections', () => (
     <React.Fragment>
-      <MangaListSection section="Following" lists={mangaList} />
-      <MangaListSection section="New Chapters" lists={mangaList} />
+      <MangaListSection
+        section="Following"
+        lists={mangaList.map(item => (
+          <MangaItem key={item.id} {...item} />
+        ))}
+      />{' '}
+      <MangaListSection
+        section="New chapter"
+        lists={mangaList.map(item => (
+          <MangaItem key={item.id} {...item} />
+        ))}
+      />
     </React.Fragment>
   ));

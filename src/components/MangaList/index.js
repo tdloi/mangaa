@@ -1,8 +1,6 @@
-import React from 'react';
 import styled from 'styled-components';
-import MangaItem from '../MangaItem';
 
-const StyledMangaList = styled.section`
+export const MangaList = styled.section`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
@@ -16,13 +14,3 @@ const StyledMangaList = styled.section`
     grid-template-columns: repeat(5, 1fr);
   }
 `;
-
-export default function MangaList({ lists }) {
-  return (
-    <StyledMangaList>
-      {lists.map(item => (
-        <MangaItem key={item.id} {...item} />
-      ))}
-    </StyledMangaList>
-  );
-}

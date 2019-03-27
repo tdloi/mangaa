@@ -1,5 +1,5 @@
 import React from 'react';
-import MangaList from '../MangaList';
+import { MangaList } from '../MangaList';
 import styled from 'styled-components';
 
 
@@ -16,7 +16,9 @@ export default function MangaListSection({ section, lists }) {
   return (
     <StyledMangaListSection>
       <h1>{section}</h1>
-      <MangaList lists={lists} />
+      <MangaList>
+        {lists}
+      </MangaList>
     </StyledMangaListSection>
   );
 }
