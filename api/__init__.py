@@ -34,6 +34,8 @@ def create_app(config=None):
 
     from .v1 import init_blueprint
     init_blueprint(app)
+    from .main import main
+    app.register_blueprint(main)
 
     celery.conf.update(app.config)
 
