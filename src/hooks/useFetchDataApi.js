@@ -22,7 +22,8 @@ export default function useFetchDataApi(initialUrl) {
 
       try {
         const response = await fetch(url, { signal });
-        setData(response.json());
+        const res = await response.json();
+        setData(res);
       } catch (err) {
         setIsError(true);
         setData([]);
