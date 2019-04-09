@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import firebase from '../../firebase';
 import Logo from '../Logo';
 import SearchWrapper from '../SearchWrapper';
 
@@ -32,16 +33,25 @@ const StyledNavbar = styled.nav`
   }
 `;
 
-export default function Navbar() {
+export default function Navbar({ user }) {
   return (
     <Wrapper>
       <StyledNavbar>
         <Logo />
         <div>
           <SearchWrapper />
-          <a className="button is-primary" href="/login">
-            Login
-          </a>
+          {user ? (
+            <span
+              className="button is-danger"
+              onClick={() => firebase.auth().signOut()}
+            >
+              Sign out
+            </span>
+          ) : (
+            <a className="button is-primary" href="/signin">
+              Sign in
+            </a>
+          )}
         </div>
       </StyledNavbar>
     </Wrapper>
