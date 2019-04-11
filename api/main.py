@@ -11,4 +11,5 @@ def add_cors(response):
     # TODO: Multiple CORS
     header = response.headers
     header['Access-Control-Allow-Origin'] = os.environ.get('FLASK_CORS')
+    header['Access-Control-Allow-Headers'] = 'Authorization'
     return response
