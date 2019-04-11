@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import 'styled-components/macro';
 
-export default function Image({ src, srcWebp, alt }) {
+export default function Image({ src, srcWebp, alt, url }) {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
@@ -20,8 +19,3 @@ export default function Image({ src, srcWebp, alt }) {
     </picture>
   );
 }
-
-Image.prototype = {
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired,
-};

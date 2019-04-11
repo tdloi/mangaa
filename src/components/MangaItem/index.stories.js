@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import MangaItem from './index';
 
 const mangaItemProps = {
@@ -12,6 +13,7 @@ const mangaItemProps = {
 };
 
 storiesOf('MangaItem', module)
+  .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add('default', () => <MangaItem {...mangaItemProps} />)
   .add('width long text', () => (
     <MangaItem
@@ -23,7 +25,7 @@ storiesOf('MangaItem', module)
   .add('with small image', () => (
     <MangaItem
       {...mangaItemProps}
-      src='https://source.unsplash.com/200x300'
-      width='250px'
+      src="https://source.unsplash.com/200x300"
+      width="250px"
     />
-  ))
+  ));

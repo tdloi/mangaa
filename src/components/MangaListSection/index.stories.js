@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { ThemeProvider } from 'styled-components';
+import { MemoryRouter } from 'react-router-dom';
 import MangaListSection from './index';
 import MangaItem from '../MangaItem';
 import '../../index.css';
@@ -17,6 +18,7 @@ const manga = {
 const mangaList = Array(10).fill(manga);
 
 storiesOf('MangaListSection', module)
+  .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add('default', () => (
     <MangaListSection
       section="Following"

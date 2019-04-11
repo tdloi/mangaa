@@ -1,14 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Image from '../Image';
 import PropTypes from 'prop-types';
 
-const StyledMangaItem = styled.a`
+const StyledMangaItem = styled.div`
   display: grid;
   grid-template-rows: repeat(11, 1fr);
   width: ${props => props.width};
   text-decoration: none;
-  & > picture {
+  & > div {
     grid-column-start: 1;
     grid-row: 1 / 12;
     margin: 0 auto;
@@ -50,14 +51,18 @@ export default function MangaItem({
   ...rest // src, alt, srcWebp
 }) {
   return (
-    <StyledMangaItem width={width} href={url}>
-      <Image {...rest} />
-      <a title={title} href={titleURL || url}>
+    <StyledMangaItem width={width}>
+      <div>
+        <Link to={url}>
+          <Image {...rest} />
+        </Link>
+      </div>
+      <Link title={title} to={titleURL || url}>
         <span>{title}</span>
-      </a>
-      <a title={subTitle} href={subTitleURL || url}>
+      </Link>
+      <Link title={subTitle} to={subTitleURL || url}>
         <span>{subTitle}</span>
-      </a>
+      </Link>
     </StyledMangaItem>
   );
 }
