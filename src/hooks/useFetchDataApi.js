@@ -5,7 +5,7 @@ import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 // update to use AbortController instead of didCancel
 // this is also an alias so don't need to append
 // REACT_APP_API for each url request
-export default function useFetchDataApi(initialUrl) {
+export default function useFetchDataApi(initialUrl, customField) {
   const host = process.env.REACT_APP_API || '';
   const url = host + initialUrl;
   const [data, setData] = useState(null);
@@ -21,7 +21,7 @@ export default function useFetchDataApi(initialUrl) {
       setIsLoading(true);
 
       try {
-        const response = await fetch(url, { signal });
+        const response = await fetch(url, { signal, ...customField });
         const res = await response.json();
         setData(res);
       } catch (err) {
