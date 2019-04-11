@@ -88,7 +88,7 @@ def get_following():
                     Chapter.manga_id.in_(list_manga_id)
                ).order_by(
                     Chapter.created.desc()
-               ).group_by(Chapter.manga_id).all()
+               ).group_by(Chapter.id, Chapter.manga_id).all()
     if not chapters:
         return jsonify({
             'code': 404,
