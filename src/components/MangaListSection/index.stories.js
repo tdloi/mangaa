@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { MemoryRouter } from 'react-router-dom';
 import MangaListSection from './index';
 import MangaItem from '../MangaItem';
+import Message from '../Message';
 import '../../index.css';
 import { theme } from '../../theme';
 
@@ -22,8 +23,8 @@ storiesOf('MangaListSection', module)
   .add('default', () => (
     <MangaListSection
       section="Following"
-      lists={mangaList.map(item => (
-        <MangaItem key={item.id} {...item} />
+      lists={mangaList.map((item, index) => (
+        <MangaItem key={index} {...item} />
       ))}
     />
   ))
@@ -31,7 +32,7 @@ storiesOf('MangaListSection', module)
     <ThemeProvider theme={theme.dark}>
       <MangaListSection
         section="Following"
-        lists={mangaList.map(item => (
+        lists={mangaList.map((item, index) => (
           <MangaItem key={item.id} {...item} />
         ))}
       />
@@ -41,15 +42,23 @@ storiesOf('MangaListSection', module)
     <React.Fragment>
       <MangaListSection
         section="Following"
-        lists={mangaList.map(item => (
+        lists={mangaList.map((item, index) => (
           <MangaItem key={item.id} {...item} />
         ))}
       />{' '}
       <MangaListSection
         section="New chapter"
-        lists={mangaList.map(item => (
+        lists={mangaList.map((item, index) => (
           <MangaItem key={item.id} {...item} />
         ))}
       />
     </React.Fragment>
-  ));
+  ))
+  .add('with only message', () => (
+    <React.Fragment>
+      <MangaListSection
+        section="Following"
+        lists={<Message content="There are no new chapters available" />}
+      />
+    </React.Fragment>
+  ))

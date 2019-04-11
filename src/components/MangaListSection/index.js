@@ -15,7 +15,7 @@ export default function MangaListSection({
   section,
   lists,
   isRenderListEmpty,
-  renderListEmptyMessage='This list is empty',
+  renderListEmptyMessage = 'This list is empty',
   isLoading,
   isError,
 }) {
@@ -31,7 +31,7 @@ export default function MangaListSection({
   return (
     <StyledMangaListSection>
       <h1>{section}</h1>
-      <MangaList>{lists}</MangaList>
+      {Array.isArray(lists) ? <MangaList>{lists}</MangaList> : <span>{ lists }</span>}
     </StyledMangaListSection>
   );
 }
