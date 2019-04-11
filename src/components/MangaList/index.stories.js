@@ -1,5 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { MemoryRouter } from 'react-router-dom';
 import { MangaList } from './index';
 import MangaItem from '../MangaItem';
 
@@ -14,6 +15,7 @@ const manga = {
 const mangaList = Array(10).fill(manga);
 
 storiesOf('MangaList', module)
+  .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add(
     'with 320px width',
     () => (
