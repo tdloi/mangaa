@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import 'styled-components/macro';
 
-export default function Image({ src, srcWebp, alt, url }) {
+export default function Image({ src, srcWebp, alt }) {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
