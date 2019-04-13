@@ -2,13 +2,18 @@ import { useState, useEffect } from 'react';
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 
 // from https://www.robinwieruch.de/react-hooks-fetch-data/
-// update to use AbortController instead of didCancel
-// this is also an alias so don't need to append
-// REACT_APP_API for each url request
-export default function useFetchDataApi(initialUrl, customField, customObserver) {
+// update to use AbortController instead of didCancel, api domain alias and
+// custom observer to force re-send request when necessary
+export default function useFetchDataApi(
+  initialUrl,
+  customField,
+  customObserver,
+  defaultValue = null
+) {
   const host = process.env.REACT_APP_API || '';
   const url = host + initialUrl;
-  const [data, setData] = useState(null);
+
+  const [data, setData] = useState(defaultValue);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
@@ -26,7 +31,7 @@ export default function useFetchDataApi(initialUrl, customField, customObserver)
         setData(res);
       } catch (err) {
         setIsError(true);
-        setData([]);
+        setData(defaultValue);
       }
 
       setIsLoading(false);
@@ -35,7 +40,7 @@ export default function useFetchDataApi(initialUrl, customField, customObserver)
     fetchData();
 
     return () => controller.abort();
-  }, [url, customObserver]);
+  }, [url, customObserver, defaultValue]);
 
   return [data, isLoading, isError];
 }
