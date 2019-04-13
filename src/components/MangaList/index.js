@@ -10,7 +10,7 @@ export const MangaList = styled.section`
       display: none;
     }
   };
-  @media (width > 900px) {
+  @media (min-width: 900px) {
     grid-template-columns: repeat(5, 1fr);
   }
 `;
