@@ -3,6 +3,7 @@ from os import environ
 from os.path import splitext
 
 from flask import Blueprint, current_app, g, jsonify, make_response, request
+from sqlalchemy import and_
 from sqlalchemy.exc import DataError, IntegrityError
 
 from ..decorators import require_token
@@ -161,3 +162,37 @@ def get(chapter_id):
     response = chapter_schema.dump(chapter).data
     response['lists'] = images_schema.dump(images).data
     return jsonify(response)
+
+
+@bp.route('/<int:chapter_id>/next')
+def get_next_chapter(chapter_id):
+    """
+    endpoint: /chapter/chapter_id/next
+    method: GET
+    description: |
+      Return next chapter id, if the current chapter is the last, return null
+    response:
+      id: chapter_id
+    error:
+      404:
+        code: 404
+        message: Not Founnd
+    """
+    chapter = Chapter.query.get(chapter_id)
+    if not chapter:
+        return jsonify({
+            'code': 404,
+            'message': 'Not Found',
+        }), 404
+    next_chapter = (
+        Chapter.query
+        .filter(and_(
+            Chapter.manga_id == chapter.manga_id,
+            Chapter.chapter > chapter.chapter,
+        ))
+        .order_by(Chapter.chapter)
+        .first()
+    )
+    if not next_chapter:
+        return jsonify({'id': None})
+    return jsonify({'id': next_chapter.id})
