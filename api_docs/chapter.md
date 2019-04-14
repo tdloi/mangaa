@@ -4,6 +4,8 @@
   + [GET](#GET-chapterchapter_id)
 - [`/chapter/chapter_id/next`](#chapterchapter_idnext)
   + [GET](#GET-chapterchapter_idnext)
+- [`/chapter/chapter_id/prev`](#chapterchapter_idprev)
+  + [GET](#GET-chapterchapter_idprev)
 
 ## POST `/chapter`
 Create a chapter upon valid request, images field will be uploaded to S3 and
@@ -92,6 +94,28 @@ Provided manga id is not valid int or does not exist
 
 ## GET `/chapter/chapter_id/next`
 Return next chapter id, if the current chapter is the last, return null
+
+### Param
+
+
+### Response
+```json
+{
+  "id": "chapter_id"
+}
+```
+
+### Error
+**404**
+```json
+{
+  "code": 404,
+  "message": "Not Founnd"
+}
+```
+
+## GET `/chapter/chapter_id/prev`
+Return previous chapter id, if the current chapter is the first, return null
 
 ### Param
 
