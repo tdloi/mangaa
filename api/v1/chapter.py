@@ -196,3 +196,37 @@ def get_next_chapter(chapter_id):
     if not next_chapter:
         return jsonify({'id': None})
     return jsonify({'id': next_chapter.id})
+
+
+@bp.route('/<int:chapter_id>/prev')
+def get_prev_chapter(chapter_id):
+    """
+    endpoint: /chapter/chapter_id/prev
+    method: GET
+    description: |
+      Return previous chapter id, if the current chapter is the first, return null
+    response:
+      id: chapter_id
+    error:
+      404:
+        code: 404
+        message: Not Founnd
+    """
+    chapter = Chapter.query.get(chapter_id)
+    if not chapter:
+        return jsonify({
+            'code': 404,
+            'message': 'Not Found',
+        }), 404
+    prev_chapter = (
+        Chapter.query
+        .filter(and_(
+            Chapter.manga_id == chapter.manga_id,
+            Chapter.chapter < chapter.chapter,
+        ))
+        .order_by(Chapter.chapter.desc())
+        .first()
+    )
+    if not prev_chapter:
+        return jsonify({'id': None})
+    return jsonify({'id': prev_chapter.id})
