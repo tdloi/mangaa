@@ -75,7 +75,7 @@ class ChapterSchema(ma.ModelSchema):
                 if int(obj.chapter) == obj.chapter else obj.chapter
              )
     url = base_fields.Function(lambda obj: f'/chapter/{obj.id}')
-    manga = ma.Nested(MangaBaseSchema(only=('title', 'url', 'cover',)))
+    manga = ma.Nested(MangaBaseSchema(only=('title', 'url', 'cover', 'id',)))
 
 
 class UserSchema(ma.ModelSchema):
