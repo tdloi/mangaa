@@ -34,7 +34,7 @@ grpcio==1.19.0
 gunicorn==19.9.0
 idna==2.8
 itsdangerous==1.1.0
-jinja2==2.10
+jinja2==2.10.1
 jmespath==0.9.4
 kombu==4.4.0
 mako==1.0.7

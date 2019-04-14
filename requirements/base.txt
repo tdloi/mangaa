@@ -31,7 +31,7 @@ googleapis-common-protos==1.5.8  # via google-api-core
 grpcio==1.19.0            # via google-api-core
 idna==2.8                 # via requests
 itsdangerous==1.1.0       # via flask
-jinja2==2.10              # via flask
+jinja2==2.10.1            # via flask
 jmespath==0.9.4           # via boto3, botocore
 kombu==4.4.0              # via celery
 mako==1.0.7               # via alembic
