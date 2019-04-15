@@ -71,7 +71,6 @@ def get(task_id):
             'results': None,
         }
 
-    res = make_response(jsonify(response))
     if type(task.info) == dict and task.info.get('location'):
-        res.headers['Location'] = task.info['location']
-    return res
+        response['location'] = task.info['location']
+    return jsonify(response)
