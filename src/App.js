@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import SignIn from './components/SignIn';
 import MangaInfo from './components/MangaInfo';
+import Chapter from './components/Chapter';
 import { useLocalStorage, useFirebaseUser } from './hooks';
 
 import 'bulma/css/bulma.css';
@@ -21,10 +22,11 @@ function App() {
         <Navbar user={user} />
       </ThemeProvider>
 
-      <Route path="/" exact component={Home} />
-      <Route path='/signin' component={SignIn} />
-      <Route path='/manga/:id' exact component={MangaInfo} />
-      <Route path='/manga/:id/:name' component={MangaInfo} />
+        <Route path="/" exact component={Home} />
+        <Route path="/signin" component={SignIn} />
+        <Route path="/manga/:id" exact component={MangaInfo} />
+        <Route path="/manga/:id/:name" component={MangaInfo} />
+        <Route path="/chapter/:id" component={Chapter} />
     </Router>
   );
 }
