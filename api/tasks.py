@@ -25,21 +25,20 @@ def upload_image(self, list_images, chapter_id):
     app.app_context().push()
 
     for current, image in enumerate(list_images, start=1):
-        ext = splitext(image)[-1][1:]   # remove . in ext to put in ContentType
+        name, ext = splitext(image)
         expires = generate_expires_field()
 
         # TODO: handlle upload fail
         s3_bucket().upload_file(
-            f'/tmp/{image}', image,
+            f'/tmp/{image}', name,
             ExtraArgs={
                 'ContentType': f'image/{ext}',
                 'Expires': expires,
             })
-        url = f'https://{bucket_name}.s3.amazonaws.com/{image}'
-        completed_images.add(url)
+        completed_images.add(name)
 
         db.session.add(Images(
-            url=url,
+            url=name,
             id_chapter=chapter_id,
             order=current,
         ))
@@ -59,20 +58,21 @@ def upload_image(self, list_images, chapter_id):
         'current': None,
         'total': total,
         'results': list(completed_images),
-        'location': f'api/v1/chapter/{chapter_id}',
+        'location': f'/chapter/{chapter_id}',
     }
 
 
 @celery.task
 def upload_webp(image, expires):
+    image_name, ext = splitext(image)
     # convert and upload webp
     subprocess.call(
-        ['cwebp', '-quiet', f'/tmp/{image}', '-o', f'/tmp/{image}.webp'])
+        ['cwebp', '-quiet', f'/tmp/{image}', '-o', f'/tmp/{image_name}.webp'])
     s3_bucket().upload_file(
-        f'/tmp/{image}.webp', f'{image}.webp',
+        f'/tmp/{image_name}.webp', f'{image_name}.webp',
         ExtraArgs={
             'ContentType': 'image/webp',
             'Expires': expires,
         })
-    remove(f'/tmp/{image}.webp')
+    remove(f'/tmp/{image_name}.webp')
     remove(f'/tmp/{image}')
