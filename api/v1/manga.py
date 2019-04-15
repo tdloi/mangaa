@@ -164,7 +164,7 @@ def post_manga():
         return jsonify({
             'code': 400,
             'message': 'Missing authors field'
-        })
+        }), 400
 
     manga = Manga(
         title=data['title'],
