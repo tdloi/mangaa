@@ -1,9 +1,14 @@
-from flask import Blueprint, g, jsonify, request
+import os
+from os.path import splitext
+
+from flask import Blueprint, g, jsonify, request, current_app
 from sqlalchemy.exc import DataError
 
 from ..decorators import load_manga, load_page_num
-from ..models import Chapter, Manga, db, Tag, Author
+from ..models import Chapter, Manga, db, Tag, Author, Images
 from ..schema import chapters_schema, manga_schema, mangas_schema
+from ..tasks import upload_webp
+from ..utils.helpers import s3_bucket, rand_str, generate_expires_field
 
 bp = Blueprint('manga', __name__)
 
@@ -79,8 +84,8 @@ def post_manga():
       alt_titles (opt): str
       description (opt): str
       cover: str (url)
-      tags: array of int (tag id)
-      authors: array of int (authors id)
+      tags: a string of tag id seperated by a comma
+      authors: a string of author id seperated by a comma
     response:
       id: 1
       title: Manga Title
@@ -100,31 +105,29 @@ def post_manga():
     error:
       400:
         code: 400
-        message: No data provided
-      400:
-        code: 400
         message: Missing Manga title field
       400:
-        desc: tags field is not an array of int or tags field contains non-existed tag id
+        desc: tags field contains non-existed tag id
         code: 400
         message: Invalid tags field
       400:
-        desc: authors field is not an array of int or authors field contains non-existed authors id
+        desc: authors field contains non-existed authors id
         code: 400
         message: Invalid authors/artists field
+      400:
+        code: 400
+        message: Missing authors field
+      400:
+        desc: Uploaded cover is not in list allowed extension file
+        code: 400
+        message: Unsupported format type
       404:
         code: 404
         message: Not Found
     """
-    data = request.get_json()
+    data = request.form
     tags_list = list()
     authors_list = list()
-
-    if not data:
-        return jsonify({
-            'code': 400,
-            'message': 'No data provided'
-        }), 400
 
     if not data.get('title'):
         return jsonify({
@@ -137,9 +140,7 @@ def post_manga():
             'code': 400,
             'message': 'Invalid tags field'
         }
-        tags = data['tags']
-        if type(tags) != list:
-            return jsonify(invalid_tags_response), 400
+        tags = data['tags'].split(',')
         try:
             tags_list = [Tag.query.get(tag) for tag in tags]
         except DataError:
@@ -152,26 +153,62 @@ def post_manga():
             'code': 400,
             'message': 'Invalid authors/artists field'
         }
-        authors = data['authors']
-        if type(authors) != list:
-            return jsonify(invalid_authors_response), 400
+        authors = data['authors'].split(',')
         try:
             authors_list = [Author.query.get(author) for author in authors]
         except DataError:
             return jsonify(invalid_authors_response), 400
         if any(a is None for a in authors_list):
             return jsonify(invalid_authors_response), 400
+    else:
+        return jsonify({
+            'code': 400,
+            'message': 'Missing authors field'
+        })
 
     manga = Manga(
         title=data['title'],
         alt_titles=data.get('alt_titles'),
         description=data.get('description'),
-        cover=data.get('cover'),
     )
     manga.tags.extend(tags_list)
     manga.authors.extend(authors_list)
     db.session.add(manga)
     db.session.commit()
+    # Upload cover to S3
+    cover = request.files.get('cover')
+    if cover:
+        _, ext = splitext(cover.filename)
+        if not ext or ext not in current_app.config['IMAGES_EXTENSION']:
+            return jsonify({
+                'code': 400,
+                'message': 'Unsupport format files'
+            }), 400
+        cover_name = rand_str(32)
+        cover_path = f'cover/{manga.id}/{cover_name}'
+        bucket_name = os.environ['AWS_S3_BUCKET']
+        expires = generate_expires_field()
+
+        if not os.path.exists(f'/tmp/cover/{manga.id}'):
+            os.makedirs(f'/tmp/cover/{manga.id}')
+        cover.save(f'/tmp/{cover_path}')
+        s3_bucket().upload_file(
+            f'/tmp/{cover_path}', cover_path,
+            ExtraArgs={
+                'ContentType': f'image/{ext}',
+                'Expires': expires,
+            }
+        )
+        manga.cover = cover_path
+        db.session.add(
+            Images(
+                url=cover_path,
+                id_manga=manga.id,
+            )
+        )
+        db.session.add(manga)
+        db.session.commit()
+        upload_webp.delay(cover_path, expires)
     return jsonify(manga_schema.dump(manga).data), 201
 
 
