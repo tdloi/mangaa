@@ -98,8 +98,8 @@ title | str
 alt_titles (opt) | str
 description (opt) | str
 cover | str (url)
-tags | array of int (tag id)
-authors | array of int (authors id)
+tags | a string of tag id seperated by a comma
+authors | a string of author id seperated by a comma
 
 ### Response
 ```json
@@ -131,11 +131,11 @@ authors | array of int (authors id)
 ### Error
 **400**
 
-authors field is not an array of int or authors field contains non-existed authors id
+Uploaded cover is not in list allowed extension file
 ```json
 {
   "code": 400,
-  "message": "Invalid authors/artists field"
+  "message": "Unsupported format type"
 }
 ```
 **404**
