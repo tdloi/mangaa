@@ -33,7 +33,7 @@ export default function MangaInfoChapters(props) {
         const title = `${vol}Chapter ${chapter.chapter} - ${chapter.title}`;
 
         return (
-          <StyledMangaInfoChaptersItem>
+          <StyledMangaInfoChaptersItem key={chapter.id}>
             <Link to={chapter.url}>{title}</Link>
             <div>
               <span>{chapter.user}</span>

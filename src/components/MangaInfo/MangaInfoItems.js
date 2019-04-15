@@ -16,7 +16,7 @@ export default function MangaInfoItems(props) {
   return (
     <StyledMangaInfoItems>
       {props.children && props.children.map(child => (
-        <span>{child}</span>
+        <span key={child.key}>{child}</span>
       ))}
     </StyledMangaInfoItems>
   );

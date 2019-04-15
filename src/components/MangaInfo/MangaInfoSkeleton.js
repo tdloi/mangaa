@@ -57,14 +57,14 @@ export default function MangaInfoSkeleton(props) {
         <MangaInfoSkeletonSection label="Tags" isTags={true}>
           <MangaInfoItems>
             {manga.tags && manga.tags.map(tag => (
-              <Link to={tag.url}>#{tag.name}</Link>
+              <Link to={tag.url} key={tag.id}>#{tag.name}</Link>
             ))}
           </MangaInfoItems>
         </MangaInfoSkeletonSection>
         <MangaInfoSkeletonSection label="Authors" isTags={true}>
           <MangaInfoItems>
             {manga.authors && manga.authors.map(author => (
-              <Link to={author.url}>{author.name}</Link>
+              <Link to={author.url} key={author.id}>{author.name}</Link>
             ))}
           </MangaInfoItems>
         </MangaInfoSkeletonSection>
