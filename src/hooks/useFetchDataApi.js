@@ -44,3 +44,20 @@ export default function useFetchDataApi(
 
   return [data, isLoading, isError];
 }
+
+// Only a convenient wrapper, use when only data is concerned
+export function useFetchGetDataApi(
+  initialUrl,
+  customField,
+  customObserver,
+  defaultValue = null
+) {
+  const [data, isLoading, isError] = useFetchDataApi( // eslint-disable-line no-unused-vars
+    initialUrl,
+    customField,
+    customObserver,
+    defaultValue
+  );
+
+  return data
+}
