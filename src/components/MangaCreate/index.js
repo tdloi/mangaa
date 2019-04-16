@@ -1,25 +1,6 @@
 import React, { useState, useReducer, useRef } from 'react';
+import { reducerMessage } from '../../reducers/reducerMessage';
 
-const messageReducer = (state, action) => {
-  switch (action.type) {
-    case 'success':
-      return {
-        isSuccess: true,
-        isError: false,
-        content: action.payload,
-      };
-    case 'error':
-      return {
-        isError: true,
-        isSuccess: false,
-        content: action.payload,
-      };
-    default:
-      return {
-        ...state,
-      };
-  }
-};
 export default function MangaCreate() {
   const [title, setTitle] = useState('');
   const [altTitles, setAltTitles] = useState('');
@@ -27,7 +8,7 @@ export default function MangaCreate() {
   const [tags, setTags] = useState('');
   const [authors, setAuthors] = useState('');
   const cover = useRef();
-  const [message, dispatch] = useReducer(messageReducer, {
+  const [message, dispatch] = useReducer(reducerMessage, {
     content: '',
     isSuccess: false,
     isError: false,
