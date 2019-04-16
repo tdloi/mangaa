@@ -12,7 +12,6 @@ import ChapterCreate from './components/ChapterCreate';
 import { NotFound } from './components/Error';
 import { useLocalStorage, useFirebaseUser } from './hooks';
 
-import 'bulma/css/bulma.css';
 import { theme } from './theme';
 
 function App() {

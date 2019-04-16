@@ -29,22 +29,20 @@ export default function Search({
 }) {
   return (
     <StyledSearch>
-      <div className="field">
+      <div>
         <div
-          className="control has-icons-left has-icons-right"
         >
           <input
-            className="input"
             type="text"
             placeholder="Search manga title"
             value={value}
             onChange={onChange}
           />
-          <span className="icon is-left is-small">
+          <span>
             <FontAwesomeIcon icon={faSearch} />
           </span>
           {isFocus && (
-            <span className="icon is-right is-small" onClick={onClick}>
+            <span onClick={onClick}>
               <FontAwesomeIcon icon={faTimes} />
             </span>
           )}

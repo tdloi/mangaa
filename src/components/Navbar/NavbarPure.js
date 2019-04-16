@@ -42,11 +42,11 @@ export default function NavbarPure(props) {
         <div>
           <SearchWrapper />
           {props.user ? (
-            <span className="button is-danger" onClick={props.signOut}>
+            <span onClick={props.signOut}>
               Sign out
             </span>
           ) : (
-            <Link className="button is-primary" to="/signin">
+            <Link to="/signin">
               Sign in
             </Link>
           )}
