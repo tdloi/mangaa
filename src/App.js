@@ -18,6 +18,11 @@ function App() {
   const [themeMode, setThemeMode] = useLocalStorage('theme', 'light'); // eslint-disable-line no-unused-vars
   const user = useFirebaseUser();
 
+  if (process.env.REACT_APP_MAINTAINANCE === 'true') {
+    const message = 'THIS SITE IS UNDER MAINTAINANCE';
+    return process.env.REACT_APP_MAINTAINANCE_MESSAGE || message;
+  }
+
   return (
     <Router>
       <ThemeProvider theme={theme[themeMode]}>
