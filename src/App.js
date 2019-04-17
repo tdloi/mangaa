@@ -9,10 +9,12 @@ import MangaInfo from './components/MangaInfo';
 import MangaCreate from './components/MangaCreate';
 import Chapter from './components/Chapter';
 import ChapterCreate from './components/ChapterCreate';
+import Wrapper from './components/Wrapper';
 import { NotFound } from './components/Error';
 import { useLocalStorage, useFirebaseUser } from './hooks';
 
 import { theme } from './theme';
+import 'typeface-merriweather';
 
 function App() {
   const [themeMode, setThemeMode] = useLocalStorage('theme', 'light'); // eslint-disable-line no-unused-vars
@@ -30,14 +32,15 @@ function App() {
       </ThemeProvider>
 
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/signin" component={SignIn} />
+        <Wrapper>
+          <Route path="/" exact component={Home} />
+          <Route path="/signin" component={SignIn} />
 
-        <Route path="/manga/new" exact component={MangaCreate} />
-        <Route path="/manga/new/:id" component={ChapterCreate} />
-        <Route path="/manga/:id" exact component={MangaInfo} />
-        <Route path="/manga/:id/:name" component={MangaInfo} />
-
+          <Route path="/manga/new" exact component={MangaCreate} />
+          <Route path="/manga/new/:id" component={ChapterCreate} />
+          <Route path="/manga/:id" exact component={MangaInfo} />
+          <Route path="/manga/:id/:name" component={MangaInfo} />
+        </Wrapper>
         <Route path="/chapter/:id" component={Chapter} />
         <Route component={NotFound} />
       </Switch>
