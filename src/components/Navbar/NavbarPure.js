@@ -28,10 +28,24 @@ const StyledNavbar = styled.nav`
   div:first-child {
     margin-right: 0.2rem;
   }
-  div > a {
-    width: 100px;
-  }
 `;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  padding: .5rem 1rem;
+  border: 1px solid;
+  border-radius: 5px;
+  background: #1abc9c;
+  color: #ecf0f1;
+  :hover {
+    box-shadow: 0 0 2px 0 #333;
+  }
+`
+
+const SignOutLink = styled(StyledLink)`
+  background: tomato;
+  color: #333;
+`
 
 export default function NavbarPure(props) {
   // Workaround storybook bug with core-js v3, which is firebase dependencies
@@ -42,13 +56,13 @@ export default function NavbarPure(props) {
         <div>
           <SearchWrapper />
           {props.user ? (
-            <span onClick={props.signOut}>
+            <SignOutLink to="#" onClick={props.signOut}>
               Sign out
-            </span>
+            </SignOutLink>
           ) : (
-            <Link to="/signin">
+            <StyledLink to="/signin">
               Sign in
-            </Link>
+            </StyledLink>
           )}
         </div>
       </StyledNavbar>
