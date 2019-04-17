@@ -5,9 +5,10 @@ import styled from 'styled-components';
 import 'typeface-satisfy';
 
 const StyledMangaListSection = styled.section`
-  padding: 0.5rem 10px;
-  padding-bottom: 1rem;
+  padding: .5rem 1rem;
   background: ${props => props.theme.bg};
+  margin-bottom: 1rem;
+  margin-top: 1rem;
   > h1 {
     color: ${props => props.theme.fg};
     font-family: 'Satisfy', cursive, serif;
