@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Image from '../Image';
-import MangaInfoItems from './MangaInfoItems';
 
 const StyledMangaInfoSkeleton = styled.section`
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 1.5rem;
-  padding: 1.5rem;
   hr: {
     color: ${props => props.theme.fgAlt};
   }
@@ -22,57 +20,83 @@ const StyledMangaInfoSkeleton = styled.section`
     grid-template-columns: 1fr 1fr;
   }
 `;
+
 const StyledMangaInfoSkeletonSection = styled.div`
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   display: flex;
-  > span:first-child {
-    min-width: 100px;
-  }
-  & a {
-    font-size: .85rem;
-  }
   @media (max-width: 650px) {
     flex-direction: column;
     span:first-child {
-      margin-bottom: ${props => props.isTags && '0.2rem'}
+      margin-bottom: ${props => props.isTags && '0.2rem'};
     }
   }
+  > :first-child {
+    min-width: 100px;
+  }
+`;
 
+const StyledLink = styled(Link)`
+  padding: 0.1rem 0.2rem;
+  border: 1px solid ${props => props.theme.fg};
+  border-radius: 2px;
+  &,
+  :visited {
+    font-size: 0.75rem;
+    text-decoration: none;
+    color: ${props => props.theme.fg};
+  }
+  :not(:last-child) {
+    margin-right: 0.5rem;
+  }
+  :hover {
+    color: ${props => props.theme.fg};
+    border: 1px solid ${props => props.theme.fg};
+    background: ${props => props.theme.bgAlt};
+  }
 `;
 
 export default function MangaInfoSkeleton(props) {
   const manga = props.manga;
 
   return (
-    <StyledMangaInfoSkeleton>
-      <Image src={manga.cover} alt={manga.title} />
-      <div>
+    <React.Fragment>
+      <h3>Chapter lists</h3>
+      <StyledMangaInfoSkeleton>
+        <Image src={manga.cover} alt={manga.title} />
         <div>
-          <h3>{manga.title}</h3>
-          <hr />
+          <div>
+            <h2>{manga.title}</h2>
+            <hr />
+          </div>
+
+          <MangaInfoSkeletonSection label="Alt titles">
+            {manga.alt_titles}
+          </MangaInfoSkeletonSection>
+
+          <MangaInfoSkeletonSection label="Tags" isTags={true}>
+            {manga.tags &&
+              manga.tags.map(tag => (
+                <StyledLink to={tag.url} key={tag.id}>
+                  #{tag.name}
+                </StyledLink>
+              ))}
+          </MangaInfoSkeletonSection>
+
+          <MangaInfoSkeletonSection label="Authors" isTags={true}>
+            {manga.authors &&
+              manga.authors.map(author => (
+                <StyledLink to={author.url} key={author.id}>
+                  {author.name}
+                </StyledLink>
+              ))}
+          </MangaInfoSkeletonSection>
+
+          <MangaInfoSkeletonSection label="Description">
+            {manga.description}
+          </MangaInfoSkeletonSection>
         </div>
-        <MangaInfoSkeletonSection label="Alt titles">
-          {manga.alt_titles}
-        </MangaInfoSkeletonSection>
-        <MangaInfoSkeletonSection label="Tags" isTags={true}>
-          <MangaInfoItems>
-            {manga.tags && manga.tags.map(tag => (
-              <Link to={tag.url} key={tag.id}>#{tag.name}</Link>
-            ))}
-          </MangaInfoItems>
-        </MangaInfoSkeletonSection>
-        <MangaInfoSkeletonSection label="Authors" isTags={true}>
-          <MangaInfoItems>
-            {manga.authors && manga.authors.map(author => (
-              <Link to={author.url} key={author.id}>{author.name}</Link>
-            ))}
-          </MangaInfoItems>
-        </MangaInfoSkeletonSection>
-        <MangaInfoSkeletonSection label="Description">
-          {manga.description}
-        </MangaInfoSkeletonSection>
-      </div>
-    </StyledMangaInfoSkeleton>
+      </StyledMangaInfoSkeleton>
+    </React.Fragment>
   );
 }
 

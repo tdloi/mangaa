@@ -30,20 +30,20 @@ function App() {
       <ThemeProvider theme={theme[themeMode]}>
         <Navbar user={user} />
       </ThemeProvider>
-
-      <Switch>
+      <ThemeProvider theme={theme[themeMode]}>
         <Wrapper>
-          <Route path="/" exact component={Home} />
-          <Route path="/signin" component={SignIn} />
-
-          <Route path="/manga/new" exact component={MangaCreate} />
-          <Route path="/manga/new/:id" component={ChapterCreate} />
-          <Route path="/manga/:id" exact component={MangaInfo} />
-          <Route path="/manga/:id/:name" component={MangaInfo} />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/signin" component={SignIn} />
+            <Route path="/manga/new" exact component={MangaCreate} />
+            <Route path="/manga/new/:id" component={ChapterCreate} />
+            <Route path="/manga/:id" exact component={MangaInfo} />
+            <Route path="/manga/:id/:name" component={MangaInfo} />
+            <Route path="/chapter/:id" exact component={Chapter} />
+            <Route component={NotFound} />
+          </Switch>
         </Wrapper>
-        <Route path="/chapter/:id" component={Chapter} />
-        <Route component={NotFound} />
-      </Switch>
+      </ThemeProvider>
     </Router>
   );
 }

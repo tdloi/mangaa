@@ -10,9 +10,18 @@ const StyledMangaInfoChapters = styled.section`
 const StyledMangaInfoChaptersItem = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0.2rem;
+  padding: .2rem;
+  margin-top: .5rem;
   > div > span:first-child {
     margin-right: 1rem;
+  }
+  @media (max-width: 480px) {
+    display: block;
+    > div {
+      margin-top: .1rem;
+      display: flex;
+      justify-content: space-between;
+    } 
   }
 `
 
@@ -28,6 +37,7 @@ export default function MangaInfoChapters(props) {
   }
   return (
     <StyledMangaInfoChapters>
+      <h3>Chapter lists</h3>
       {chapters.map(chapter => {
         const vol = chapter.vol ? `Vol ${chapter.vol} ` : '';
         const title = `${vol}Chapter ${chapter.chapter} - ${chapter.title}`;
