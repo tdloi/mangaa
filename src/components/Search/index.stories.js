@@ -1,8 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Search from './index';
-import { theme } from '../../theme';
 
 const searchItem = {
   thumbnail: '//source.unsplash.com/100x100',
@@ -22,9 +21,6 @@ const Wrap = styled.div`
 `
 
 storiesOf('Search', module)
-  .addDecorator(storyFn => (
-    <ThemeProvider theme={theme.light}>{storyFn()}</ThemeProvider>
-  ))
   .add('default', () => <Search lists={searchList} />)
   .add('is focus', () => <Search isFocus={true} lists={searchList} />)
   .add('is loading', () => <Search isLoading={true} lists={searchList} />)

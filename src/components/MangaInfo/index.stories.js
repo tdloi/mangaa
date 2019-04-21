@@ -47,11 +47,9 @@ const manga = {
 storiesOf('MangaInfoSkeleton', module)
   .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add('default', () => (
-    <ThemeProvider theme={theme.light}>
-      <Wrapper>
-        <MangaInfoSkeleton manga={manga} />
-      </Wrapper>
-    </ThemeProvider>
+    <Wrapper>
+      <MangaInfoSkeleton manga={manga} />
+    </Wrapper>
   ))
   .add('with dark theme', () => (
     <ThemeProvider theme={theme.dark}>
