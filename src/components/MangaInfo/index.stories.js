@@ -57,7 +57,34 @@ storiesOf('MangaInfoSkeleton', module)
         <MangaInfoSkeleton manga={manga} />
       </Wrapper>
     </ThemeProvider>
-  ));
+  ))
+  .add(
+    'with 414px width',
+    () => (
+      <Wrapper>
+        <MangaInfoSkeleton manga={manga} />
+      </Wrapper>
+    ),
+    { viewport: { defaultViewport: 'iphonexr' } }
+  )
+  .add(
+    'with 540px width',
+    () => (
+      <Wrapper>
+        <MangaInfoSkeleton manga={manga} />
+      </Wrapper>
+    ),
+    { viewport: { defaultViewport: 'pixel' } }
+  )
+  .add(
+    'with 768px width',
+    () => (
+      <Wrapper>
+        <MangaInfoSkeleton manga={manga} />
+      </Wrapper>
+    ),
+    { viewport: { defaultViewport: 'ipad' } }
+  )
 
 const chapter = {
   chapter: 1,

@@ -1,18 +1,23 @@
 import React from 'react';
+import styled from 'styled-components';
+
 import { MangaList } from '../MangaList';
 import Loading from '../Loading';
-import styled from 'styled-components';
 import 'typeface-satisfy';
 
 const StyledMangaListSection = styled.section`
-  padding: .5rem 1rem;
-  background: ${props => props.theme.bg};
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin: 1rem auto;
   > h1 {
     color: ${props => props.theme.fg};
     font-family: 'Satisfy', cursive, serif;
     font-size: 2.2rem;
+    text-decoration: underline;
+    margin-bottom: .5rem;
+    margin-left: 1rem;
+  }
+  > div {
+    background: ${props => props.theme.bg};
+    padding: 1rem .85rem;
   }
 `;
 
@@ -29,19 +34,21 @@ export default function MangaListSection({
   ) : (
     <span>{lists}</span>
   );
+
   if (isLoading) {
     render = <Loading />;
   }
-  if (isError) {
+  else if (isError) {
     render = 'Something went wrong';
   }
-  if (isRenderListEmpty) {
+  else if (isRenderListEmpty) {
     render = renderListEmptyMessage;
   }
+
   return (
     <StyledMangaListSection>
       <h1>{section}</h1>
-      {render}
+      <div>{render}</div>
     </StyledMangaListSection>
   );
 }

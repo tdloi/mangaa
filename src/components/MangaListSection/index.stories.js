@@ -31,11 +31,6 @@ const RenderMangaList = ({ section }) => (
 storiesOf('MangaListSection', module)
   .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add('default', () => <RenderMangaList section="Following" />)
-  .add('with dark theme', () => (
-    <ThemeProvider theme={theme.dark}>
-      <RenderMangaList section="Following" />
-    </ThemeProvider>
-  ))
   .add('with two sections', () => (
     <React.Fragment>
       <RenderMangaList section="Following" />
@@ -55,7 +50,13 @@ storiesOf('MangaListSection', module)
       <RenderMangaList section="Following" />
     </Wrapper>
   ))
-
+  .add('with dark theme wrapper', () => (
+    <ThemeProvider theme={theme.dark}>
+      <Wrapper>
+        <RenderMangaList section="Following" />
+      </Wrapper>
+    </ThemeProvider>
+  ))
   .add('is loading', () => (
     <MangaListSection
       isLoading={true}

@@ -33,7 +33,7 @@ function FavoriteList({ user, idToken }) {
   if (favoriteList && favoriteList.code) {
     return (
       <MangaListSection
-        section="Favorite Realease"
+        section="favorite realease"
         lists={<Message content={favoriteList.message} />}
       />
     );

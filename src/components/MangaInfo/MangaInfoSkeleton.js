@@ -7,8 +7,11 @@ const StyledMangaInfoSkeleton = styled.section`
   display: grid;
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 1.5rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  background: ${props => props.theme.bg};
   hr: {
-    color: ${props => props.theme.fgAlt};
+    border-color: ${props => props.theme.fg};
   }
   @media (max-width: 520px) {
     display: block;
@@ -60,7 +63,6 @@ export default function MangaInfoSkeleton(props) {
 
   return (
     <React.Fragment>
-      <h3>Chapter lists</h3>
       <StyledMangaInfoSkeleton>
         <Image src={manga.cover} alt={manga.title} />
         <div>

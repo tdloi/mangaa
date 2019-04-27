@@ -30,7 +30,7 @@ export default function Home() {
         isLoading={isNewChapterListLoading}
         isError={isNewChapterListError}
         isRenderListEmpty={newChapterList && newChapterList.length === 0}
-        section="New chapters"
+        section="new chapters"
         lists={
           newChapterList &&
           newChapterList.map(chapter => (
@@ -50,7 +50,7 @@ export default function Home() {
         isLoading={isNewMangaListLoading}
         isError={isNewMangaListError}
         isRenderListEmpty={newMangaList && newMangaList.length === 0}
-        section="New Manga"
+        section="new manga"
         lists={
           newMangaList &&
           newMangaList.map(manga => (
