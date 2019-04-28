@@ -4,9 +4,9 @@ import { reducerMessage } from '../../reducers/reducerMessage';
 
 export default function ChapterCreate({ match }) {
   const mangaID = match.params.id;
-  const [title, setTitle] = useState(undefined);
-  const [vol, setVol] = useState(undefined);
-  const [chapter, setChapter] = useState(undefined);
+  const [title, setTitle] = useState('');
+  const [vol, setVol] = useState('');
+  const [chapter, setChapter] = useState('');
   const files = useRef();
   const user = useFirebaseUser();
   const userToken = useFirebaseIdToken();
@@ -81,7 +81,7 @@ export default function ChapterCreate({ match }) {
       <div>
         <label>Chapter images:</label>
         <input
-          name="cover"
+          name="content"
           type="file"
           ref={files}
           accept=".jpg,.jpeg,.png,.webp"
