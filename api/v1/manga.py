@@ -1,14 +1,14 @@
 import os
 from os.path import splitext
 
-from flask import Blueprint, g, jsonify, request, current_app
+from flask import Blueprint, current_app, g, jsonify, request
 from sqlalchemy.exc import DataError
 
-from ..decorators import load_manga, load_page_num
-from ..models import Chapter, Manga, db, Tag, Author, Images
+from ..decorators import load_manga, load_page_num, load_token, require_token
+from ..models import Author, Chapter, Images, Manga, Tag, User, UsersManga, db
 from ..schema import chapters_schema, manga_schema, mangas_schema
 from ..tasks import upload_webp
-from ..utils.helpers import s3_bucket, rand_str, generate_expires_field
+from ..utils.helpers import generate_expires_field, rand_str, s3_bucket
 
 bp = Blueprint('manga', __name__)
 
@@ -261,6 +261,68 @@ def delete_manga(manga_id):
     return jsonify({
         'code': 200,
         'message': 'Deleted'
+    }), 200
+
+
+@bp.route('/<int:manga_id>/favorite', methods=('GET', ))
+@load_token
+def get_favorite_mange(manga_id):
+    """
+    endpoint: /manga/<manga_id>/favorite
+    method: GET
+    response:
+        total: total_favorited
+        status: False
+    """
+    total_favorited = UsersManga.query.filter_by(
+        manga_id=manga_id,
+        favorited=True,
+    ).count()
+    if g.uid:
+        status = (
+            UsersManga.query.with_entities(UsersManga.favorited)
+            .filter_by(user_uid=g.uid, manga_id=manga_id)
+            .scalar()
+        )
+    else:
+        status = False
+    return jsonify({
+        'total': total_favorited,
+        'status': status,
+    }), 200
+
+
+@bp.route('/<int:manga_id>/favorite', methods=('POST', ))
+@require_token
+def favorite_mange(manga_id):
+    """
+    endpoint: /manga/<manga_id>/favorite
+    method: POST
+    response:
+        total: total_favorited
+        status: False
+    """
+    user = User.query.get(g.uid)
+    user_manga = UsersManga.query.filter_by(
+        user_uid=g.uid,
+        manga_id=manga_id
+    ).first()
+    if not user_manga:
+        user_manga = UsersManga(
+            user_uid=g.uid,
+            manga_id=manga_id,
+            favorited=False,
+        )
+    user_manga.favorited = not user_manga.favorited
+    db.session.add(user_manga)
+    db.session.commit()
+    total_favorited = UsersManga.query.filter_by(
+        manga_id=manga_id,
+        favorited=True,
+    ).count()
+    return jsonify({
+        'total': total_favorited,
+        'status': user_manga.favorited,
     }), 200
 
 

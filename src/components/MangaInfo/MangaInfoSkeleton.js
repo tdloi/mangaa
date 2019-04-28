@@ -93,6 +93,8 @@ export default function MangaInfoSkeleton(props) {
               ))}
           </MangaInfoSkeletonSection>
 
+          <button onClick={props.favoriteButtonClick}>{props.favoriteButtonText}</button>
+
           <MangaInfoSkeletonSection label="Description">
             {manga.description}
           </MangaInfoSkeletonSection>
