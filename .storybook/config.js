@@ -3,7 +3,7 @@ import { addDecorator, addParameters, configure } from '@storybook/react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../src/theme'
 
-const req = require.context('../src/components', true, /\.stories\.js$/);
+const req = require.context('../src', true, /\.stories\.js$/);
 
 function loadStories() {
   req.keys().forEach(filename => req(filename));
