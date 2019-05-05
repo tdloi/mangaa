@@ -6,6 +6,14 @@
   + [GET](#GET-manga<manga_id>)
 - [`/manga/<manga_id>/chapters`](#manga<manga_id>chapters)
   + [GET](#GET-manga<manga_id>chapters)
+- [`/manga/<manga_id>/comments`](#manga<manga_id>comments)
+  + [GET](#GET-manga<manga_id>comments)
+  + [POST](#POST-manga<manga_id>comments)
+- [`/manga/<manga_id>/favorite`](#manga<manga_id>favorite)
+  + [GET](#GET-manga<manga_id>favorite)
+  + [POST](#POST-manga<manga_id>favorite)
+- [`/manga/<manga_id>/rating`](#manga<manga_id>rating)
+  + [POST](#POST-manga<manga_id>rating)
 
 ## DELETE `/manga`
 
@@ -223,4 +231,126 @@ Uploaded cover is not in list allowed extension file
   "message": "Not Found"
 }
 ```
+
+## GET `/manga/<manga_id>/comments`
+
+### Param
+
+
+### Response
+```json
+[
+  {
+    "manga": 1,
+    "lists": [
+      {
+        "id": 1,
+        "created": 123456789,
+        "vol": 1,
+        "chapter": 1,
+        "manga": [
+          {
+            "title": "manga title",
+            "url": "/manga/1/manga-title",
+            "cover": "manga_cover_url"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+### Error
+**404**
+```json
+{
+  "message": "Not Found"
+}
+```
+
+## POST `/manga/<manga_id>/comments`
+
+### Param
+
+
+### Response
+```json
+[
+  {
+    "manga": 1,
+    "lists": [
+      {
+        "id": 1,
+        "created": 123456789,
+        "vol": 1,
+        "chapter": 1,
+        "manga": [
+          {
+            "title": "manga title",
+            "url": "/manga/1/manga-title",
+            "cover": "manga_cover_url"
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+### Error
+**404**
+```json
+{
+  "message": "Not Found"
+}
+```
+
+## GET `/manga/<manga_id>/favorite`
+
+### Param
+
+
+### Response
+```json
+{
+  "total": "total_favorited",
+  "status": false
+}
+```
+
+### Error
+
+
+## POST `/manga/<manga_id>/favorite`
+
+### Param
+
+
+### Response
+```json
+{
+  "total": "total_favorited",
+  "status": false
+}
+```
+
+### Error
+
+
+## POST `/manga/<manga_id>/rating`
+
+### Param
+
+
+### Response
+```json
+{
+  "rating": 7.2,
+  "user_rating": 5
+}
+```
+
+### Error
+
 
