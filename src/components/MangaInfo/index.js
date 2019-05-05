@@ -5,6 +5,7 @@ import MangaInfoChapters from './MangaInfoChapters';
 import LoadingAndErrorWrapper from '../LoadingAndErrorWrapper';
 import Loading from '../Loading';
 import Comment from '../Comment';
+import Rating from '../Rating';
 import { NotFound } from '../Error';
 
 export default function MangaInfo({ match }) {
@@ -54,6 +55,7 @@ export default function MangaInfo({ match }) {
       renderIsError={<NotFound />}
     >
       <MangaInfoSkeleton user={user} manga={manga} favoriteButtonClick={() => favoriteManga()} favoriteButtonText={favorite ? 'Unfavorite' : 'Favorite'}/>
+      <Rating mangaID={mangaId} />
       <hr />
       <LoadingAndErrorWrapper
         isLoading={isLoadingChapters}

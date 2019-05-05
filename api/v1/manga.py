@@ -401,6 +401,44 @@ def favorite_mange(manga_id):
     }), 200
 
 
+@bp.route('/<int:manga_id>/rating', methods=('POST', ))
+@require_token
+def rating_mange(manga_id):
+    """
+    endpoint: /manga/<manga_id>/rating
+    method: POST
+    response:
+        rating: 7.2
+        user_rating: 5
+    """
+    user = User.query.get(g.uid)
+    req = request.get_json()
+    if not req or not req.get('rating') or type(req.get('rating')) != int:
+        return jsonify({
+            'code': 400,
+            'message': 'invalid request'
+        }), 400
+    rating = req.get('rating')
+    user_manga = UsersManga.query.filter_by(
+        user_uid=g.uid,
+        manga_id=manga_id
+    ).first()
+
+    if not user_manga:
+        user_manga = UsersManga(
+            user_uid=g.uid,
+            manga_id=manga_id,
+            rating=rating,
+        )
+    user_manga.rating = rating
+    db.session.add(user_manga)
+    db.session.commit()
+    return jsonify({
+        'rating': 1,
+        'user_rating': rating,
+    }), 200
+
+
 @bp.route('/<int:manga_id>/chapters')
 @load_manga
 def get_chapters(manga_id):
