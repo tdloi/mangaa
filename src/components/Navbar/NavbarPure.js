@@ -1,26 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Logo from '../Logo';
-import SearchWrapper from '../SearchWrapper';
+
+import Logo from 'components/Logo';
 
 const Wrapper = styled.div`
-  background: ${props => props.theme.bg};
-  @media (width <= 900) {
+  ${({ theme }) => `
+    background: ${theme.nav.bg};
+    border-bottom: 2px solid ${theme.shadow};
+  `}
+
+  @media (width < 900) {
     padding: 0 1rem;
   }
-`;
+`
 
 const StyledNavbar = styled.nav`
-  background: ${props => props.theme.bg};
-  color: ${props => props.theme.fg};
-  height: 50px;
+  background: transparent;
+  color: ${({ theme }) => theme.fg};
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1270px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 0 0.5rem;
+
   div {
     display: flex;
     justify-content: flex-end;
@@ -33,17 +38,18 @@ const StyledNavbar = styled.nav`
 const StyledLink = styled(Link)`
   text-decoration: none;
   padding: .5rem 1rem;
-  border: 1px solid;
+  border: 1px solid #1abc9c;
   border-radius: 5px;
   background: #1abc9c;
   color: #ecf0f1;
   :hover {
-    box-shadow: 0 0 2px 0 #333;
+    box-shadow: 0 0 2px 0 ${({ theme }) => theme.fgAlt};
   }
 `
 
 const SignOutLink = styled(StyledLink)`
   background: tomato;
+  border: 1px solid tomato;
   color: #333;
 `
 
@@ -54,7 +60,6 @@ export default function NavbarPure(props) {
       <StyledNavbar>
         <Logo />
         <div>
-          <SearchWrapper />
           {props.user ? (
             <SignOutLink to="#" onClick={props.signOut}>
               Sign out

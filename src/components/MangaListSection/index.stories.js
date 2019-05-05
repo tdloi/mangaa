@@ -2,12 +2,15 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { ThemeProvider } from 'styled-components';
 import { MemoryRouter } from 'react-router-dom';
+
 import MangaListSection from './index';
-import MangaItem from '../MangaItem';
-import Message from '../Message';
-import Wrapper from '../Wrapper';
-import '../../index.css';
-import { theme } from '../../theme';
+import MangaItem from 'components/MangaItem';
+import Message from 'components/Message';
+
+import 'index.css';
+import 'sanitize.css'
+import 'typeface-merriweather';
+import { theme } from 'theme';
 
 const manga = {
   url: 'https://mdn.dev',
@@ -31,6 +34,11 @@ const RenderMangaList = ({ section }) => (
 storiesOf('MangaListSection', module)
   .addDecorator(storyFn => <MemoryRouter>{storyFn()}</MemoryRouter>)
   .add('default', () => <RenderMangaList section="Following" />)
+  .add('with dark theme', () => (
+    <ThemeProvider theme={theme.dark}>
+      <RenderMangaList section="Following" />
+    </ThemeProvider>
+  ))
   .add('with two sections', () => (
     <React.Fragment>
       <RenderMangaList section="Following" />
@@ -44,18 +52,6 @@ storiesOf('MangaListSection', module)
         lists={<Message content="There are no new chapters available" />}
       />
     </React.Fragment>
-  ))
-  .add('with wrapper', () => (
-    <Wrapper>
-      <RenderMangaList section="Following" />
-    </Wrapper>
-  ))
-  .add('with dark theme wrapper', () => (
-    <ThemeProvider theme={theme.dark}>
-      <Wrapper>
-        <RenderMangaList section="Following" />
-      </Wrapper>
-    </ThemeProvider>
   ))
   .add('is loading', () => (
     <MangaListSection

@@ -1,23 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { MangaList } from '../MangaList';
-import Loading from '../Loading';
-import 'typeface-satisfy';
+import Loading from 'components/Loading';
+import Wrapper from 'components/Wrapper';
+
+import { MangaList } from './MangaList';
 
 const StyledMangaListSection = styled.section`
   margin: 1rem auto;
   > h1 {
     color: ${props => props.theme.fg};
-    font-family: 'Satisfy', cursive, serif;
     font-size: 2.2rem;
-    text-decoration: underline;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
     margin-left: 1rem;
   }
   > div {
-    background: ${props => props.theme.bg};
-    padding: 1rem .85rem;
+    background: ${({ theme }) => theme.bg};
+    padding: 1rem 1.25rem;
+    border: 1px solid ${({ theme }) => theme.shadow};
+    border-radius: .35rem;
+    ${({ isList }) => !isList && `
+      background: transparent;
+      border: none;
+      padding-top: 0;
+      padding-bottom: 0;
+    `}
+    @media (width > 900px) {
+      padding-left: 1.55rem;
+      padding-right: 1.55rem;
+    }
   }
 `;
 
@@ -29,26 +40,24 @@ export default function MangaListSection({
   isLoading,
   isError,
 }) {
-  let render = Array.isArray(lists) ? (
-    <MangaList>{lists}</MangaList>
-  ) : (
-    <span>{lists}</span>
-  );
+  let [render, isList] = Array.isArray(lists)
+    ? [<MangaList>{lists}</MangaList>, true]
+    : [<span>{lists}</span>, false];
 
   if (isLoading) {
     render = <Loading />;
-  }
-  else if (isError) {
+  } else if (isError) {
     render = 'Something went wrong';
-  }
-  else if (isRenderListEmpty) {
+  } else if (isRenderListEmpty) {
     render = renderListEmptyMessage;
   }
 
   return (
-    <StyledMangaListSection>
-      <h1>{section}</h1>
-      <div>{render}</div>
-    </StyledMangaListSection>
+    <Wrapper>
+      <StyledMangaListSection isList={isList}>
+        <h1>{section}</h1>
+        <div>{render}</div>
+      </StyledMangaListSection>
+    </Wrapper>
   );
 }

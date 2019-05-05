@@ -4,7 +4,7 @@ import 'styled-components/macro';
 
 const StyledWrapper = styled.div`
   max-width: 1180px;
-  padding: ${props => props.borderless ? 0 : '.5rem'};
+  padding: .5rem;
   margin: auto;
 `
 
