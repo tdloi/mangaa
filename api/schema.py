@@ -3,7 +3,7 @@ from os import environ
 from flask_marshmallow import Marshmallow, base_fields
 from marshmallow import pre_dump, pre_load
 
-from .models import Author, Chapter, Images, Manga, Tag, User
+from .models import Author, Chapter, Comment, Images, Manga, Tag, User
 
 ma = Marshmallow()
 
@@ -52,6 +52,11 @@ class ImageSchema(ma.ModelSchema):
         exclude = ('manga',)
 
 
+class CommentSchema(ma.ModelSchema):
+    class Meta:
+        model = Comment
+
+
 class MangaSchema(MangaBaseSchema):
     class Meta:
         model = Manga
@@ -97,5 +102,7 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 image_schema = ImageSchema()
 images_schema = ImageSchema(many=True)
+comment_schema = CommentSchema()
+comments_schema = CommentSchema(many=True)
 chapter_schema = ChapterSchema()
 chapters_schema = ChapterSchema(many=True)

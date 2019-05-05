@@ -106,3 +106,12 @@ class Images(db.Model):
     id_manga = db.Column(db.Integer, db.ForeignKey('manga.id', ondelete='CASCADE'))
     id_chapter = db.Column(db.Integer, db.ForeignKey('chapter.id', ondelete='CASCADE'))
     order = db.Column(db.Integer)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    created = db.Column(db.Integer, default=epoch_time)
+    id_manga = db.Column(db.Integer, db.ForeignKey('manga.id', ondelete='CASCADE'))
+    id_chapter = db.Column(db.Integer, db.ForeignKey('chapter.id', ondelete='CASCADE'))
+    user_uid = db.Column(db.String, db.ForeignKey('user.uid', ondelete='CASCADE'))
+    content = db.Column(db.String)

@@ -5,8 +5,8 @@ from flask import Blueprint, current_app, g, jsonify, request
 from sqlalchemy.exc import DataError
 
 from ..decorators import load_manga, load_page_num, load_token, require_token
-from ..models import Author, Chapter, Images, Manga, Tag, User, UsersManga, db
-from ..schema import chapters_schema, manga_schema, mangas_schema
+from ..models import Author, Chapter, Comment, Images, Manga, Tag, User, UsersManga, db
+from ..schema import chapters_schema, comment_schema, comments_schema, manga_schema, mangas_schema
 from ..tasks import upload_webp
 from ..utils.helpers import generate_expires_field, rand_str, s3_bucket
 
@@ -262,6 +262,81 @@ def delete_manga(manga_id):
         'code': 200,
         'message': 'Deleted'
     }), 200
+
+
+@bp.route('/<int:manga_id>/comment')
+@load_manga
+def get_comments(manga_id):
+    """
+    endpoint: /manga/<manga_id>/comments
+    method: GET
+    response_type: array
+    response:
+      manga: 1
+      lists:
+        id: 1
+        created: 123456789
+        vol: 1
+        chapter: 1
+        manga:
+          title: manga title
+          url: /manga/1/manga-title
+          cover: manga_cover_url
+    error:
+      404:
+        message: Not Found
+    """
+    comments = Comment.query.filter(
+        Comment.id_manga == g.manga.id,
+        Comment.id_chapter.is_(None),
+    ).order_by(Comment.created.desc()).all()
+    return jsonify(comments_schema.dump(comments).data)
+
+
+@bp.route('/<int:manga_id>/comment', methods=('POST',))
+@load_manga
+@require_token
+def post_comments(manga_id):
+    """
+    endpoint: /manga/<manga_id>/comments
+    method: POST
+    response_type: array
+    response:
+      manga: 1
+      lists:
+        id: 1
+        created: 123456789
+        vol: 1
+        chapter: 1
+        manga:
+          title: manga title
+          url: /manga/1/manga-title
+          cover: manga_cover_url
+    error:
+      404:
+        message: Not Found
+    """
+    data = request.get_json()
+    if not data:
+        return jsonify({
+            'code': 400,
+            'message': 'invalid request',
+        }), 400
+
+    if not data.get('content'):
+        return jsonify({
+            'code': 400,
+            'message': 'No data is provided',
+        }), 400
+
+    comment = Comment(
+        content=data.get('content'),
+        id_manga=g.manga.id,
+        user_uid=g.uid
+    )
+    db.session.add(comment)
+    db.session.commit()
+    return jsonify(comment_schema.dump(comment).data)
 
 
 @bp.route('/<int:manga_id>/favorite', methods=('GET', ))

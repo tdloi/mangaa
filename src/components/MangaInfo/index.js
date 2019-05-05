@@ -4,6 +4,7 @@ import MangaInfoSkeleton from './MangaInfoSkeleton';
 import MangaInfoChapters from './MangaInfoChapters';
 import LoadingAndErrorWrapper from '../LoadingAndErrorWrapper';
 import Loading from '../Loading';
+import Comment from '../Comment';
 import { NotFound } from '../Error';
 
 export default function MangaInfo({ match }) {
@@ -39,7 +40,6 @@ export default function MangaInfo({ match }) {
     if (currentFavorite.status !== undefined) {
       setFavorite(currentFavorite.status);
     }
-    console.log(favorite);
   }
 
   useEffect(() => {
@@ -63,6 +63,8 @@ export default function MangaInfo({ match }) {
       >
         <MangaInfoChapters chapters={chapters} />
       </LoadingAndErrorWrapper>
+
+      <Comment match={match} />
     </LoadingAndErrorWrapper>
   );
 }
