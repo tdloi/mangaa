@@ -1,21 +1,23 @@
-import React from 'react';
-import MangaListSection from '../MangaListSection';
-import MangaItem from '../MangaItem';
-import Message from '../Message';
-import { useFetchDataApi, useFirebaseIdToken } from '../../hooks';
+import React, { useContext } from 'react';
 
-export default function FavoriteListSection({ user }) {
-  const idToken = useFirebaseIdToken(user);
-  // there is a time lag when current user is loaded so idtoken is null
-  // at that time
+import { UserIdTokenContext } from 'context/UserIdTokenContext';
+import { useFetchDataApi } from 'hooks';
+
+import MangaListSection from 'components/MangaListSection';
+import MangaItem from 'components/MangaItem';
+import Message from 'components/Message';
+
+export default function FavoriteListSection() {
+  const idToken = useContext(UserIdTokenContext);
+
   return (
     <React.Fragment>
-      {idToken && <FavoriteList user={user} idToken={idToken} />}
+      {idToken && <FavoriteList idToken={idToken} />}
     </React.Fragment>
   );
 }
 
-function FavoriteList({ user, idToken }) {
+function FavoriteList({ idToken }) {
   const [
     favoriteList,
     isFavoriteListLoading,
@@ -41,7 +43,6 @@ function FavoriteList({ user, idToken }) {
 
   return (
     <React.Fragment>
-      {user && (
         <MangaListSection
           isLoading={isFavoriteListLoading}
           isError={isFavoriteListError}
@@ -61,7 +62,6 @@ function FavoriteList({ user, idToken }) {
             ))
           }
         />
-      )}
     </React.Fragment>
   );
 }

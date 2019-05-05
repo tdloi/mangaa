@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useFetchDataApi, useFirebaseIdToken, useFirebaseUser } from '../../hooks';
+import React, { useState, useEffect, useContext } from 'react';
+
+import { UserIdTokenContext } from 'context/UserIdTokenContext'
+import { useFetchDataApi } from 'hooks';
+
+import LoadingAndErrorWrapper from 'components/LoadingAndErrorWrapper';
+import Loading from 'components/Loading';
+import Comment from 'components/Comment';
+import Rating from 'components/Rating';
+import { NotFound } from 'components/Error';
+
 import MangaInfoSkeleton from './MangaInfoSkeleton';
 import MangaInfoChapters from './MangaInfoChapters';
-import LoadingAndErrorWrapper from '../LoadingAndErrorWrapper';
-import Loading from '../Loading';
-import Comment from '../Comment';
-import Rating from '../Rating';
-import { NotFound } from '../Error';
 
 export default function MangaInfo({ match }) {
   const mangaId = match.params.id;
-  const user = useFirebaseUser();
-  const token = useFirebaseIdToken(user);
+  const token = useContext(UserIdTokenContext);
   const [favorite, setFavorite] = useState(false);
   const [totalFavorite, setTotalFavorite] = useState(0);
   const [manga, isLoading, isError] = useFetchDataApi(
@@ -54,7 +57,7 @@ export default function MangaInfo({ match }) {
       isError={isError || manga.code === 404}
       renderIsError={<NotFound />}
     >
-      <MangaInfoSkeleton user={user} manga={manga} favoriteButtonClick={() => favoriteManga()} favoriteButtonText={favorite ? 'Unfavorite' : 'Favorite'}/>
+      <MangaInfoSkeleton manga={manga} favoriteButtonClick={() => favoriteManga()} favoriteButtonText={favorite ? 'Unfavorite' : 'Favorite'}/>
       <Rating mangaID={mangaId} />
       <hr />
       <LoadingAndErrorWrapper

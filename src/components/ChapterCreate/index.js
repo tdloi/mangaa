@@ -1,6 +1,7 @@
-import React, { useState, useReducer, useRef } from 'react';
-import { useFirebaseUser, useFirebaseIdToken } from '../../hooks';
-import { reducerMessage } from '../../reducers/reducerMessage';
+import React, { useState, useReducer, useRef, useContext } from 'react';
+
+import { UserIdTokenContext } from 'context/UserIdTokenContext'
+import { reducerMessage } from 'reducers/reducerMessage';
 
 export default function ChapterCreate({ match }) {
   const mangaID = match.params.id;
@@ -8,15 +9,14 @@ export default function ChapterCreate({ match }) {
   const [vol, setVol] = useState('');
   const [chapter, setChapter] = useState('');
   const files = useRef();
-  const user = useFirebaseUser();
-  const userToken = useFirebaseIdToken();
+  const userToken = useContext(UserIdTokenContext);
   const [message, dispatch] = useReducer(reducerMessage, {
     content: '',
     isSuccess: false,
     isError: false,
   });
 
-    const submitForm = async body => {
+  const submitForm = async body => {
     const host = process.env.REACT_APP_API || '';
     try {
       const response = await fetch(host + '/chapter', {
@@ -44,10 +44,8 @@ export default function ChapterCreate({ match }) {
     submitForm(formData);
   };
 
-  if (!user) return 'You have not logged in';
-
   return (
-    <form onSubmit={handleSubmit} user={user}>
+    <form onSubmit={handleSubmit}>
       <div>{message.content}</div>
       <div>
         <label>Title: </label>

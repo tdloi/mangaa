@@ -2,6 +2,9 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import { UserContextProvider } from 'context/UserContext';
+import { UserIdTokenContextProvider } from 'context/UserIdTokenContext';
+
 import Navbar from 'components/Navbar';
 import Home from 'components/Home';
 import SignIn from 'components/SignIn';
@@ -19,7 +22,7 @@ import 'typeface-merriweather';
 
 function App() {
   const [themeMode, setThemeMode] = useLocalStorage('theme', 'light'); // eslint-disable-line no-unused-vars
-  const user = useFirebaseUser();
+  const [user, userIdToken] = useFirebaseUser();
 
   if (process.env.REACT_APP_MAINTAINANCE === 'true') {
     const message = 'THIS SITE IS UNDER MAINTAINANCE';
@@ -28,23 +31,27 @@ function App() {
 
   return (
     <Router>
-      <ThemeProvider theme={theme[themeMode]}>
-        <Navbar user={user} />
-      </ThemeProvider>
-      <ThemeProvider theme={theme[themeMode]}>
-        <Wrapper>
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/signin" component={SignIn} />
-            <Route path="/manga/new" exact component={MangaCreate} />
-            <Route path="/manga/new/:id" component={ChapterCreate} />
-            <Route path="/manga/:id" exact component={MangaInfo} />
-            <Route path="/manga/:id/:name" component={MangaInfo} />
-            <Route path="/chapter/:id" exact component={Chapter} />
-            <Route component={NotFound} />
-          </Switch>
-        </Wrapper>
-      </ThemeProvider>
+      <UserContextProvider value={user}>
+        <UserIdTokenContextProvider value={userIdToken}>
+          <ThemeProvider theme={theme[themeMode]}>
+            <React.Fragment>
+              <Navbar user={user} />
+              <Wrapper>
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path="/signin" component={SignIn} />
+                  <Route path="/manga/new" exact component={MangaCreate} />
+                  <Route path="/manga/new/:id" component={ChapterCreate} />
+                  <Route path="/manga/:id" exact component={MangaInfo} />
+                  <Route path="/manga/:id/:name" component={MangaInfo} />
+                  <Route path="/chapter/:id" exact component={Chapter} />
+                  <Route component={NotFound} />
+                </Switch>
+              </Wrapper>
+            </React.Fragment>
+          </ThemeProvider>
+        </UserIdTokenContextProvider>
+      </UserContextProvider>
     </Router>
   );
 }

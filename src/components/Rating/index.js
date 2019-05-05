@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useFirebaseIdToken, useFirebaseUser } from '../../hooks';
+import React, { useState, useContext } from 'react';
+
+import { UserIdTokenContext } from 'context/UserIdTokenContext';
 
 export default function Rating({ mangaID }) {
   const [value, setValue] = useState('')
-  const user = useFirebaseUser();
-  const token = useFirebaseIdToken(user);
+  const token = useContext(UserIdTokenContext);
 
   const onChange = async (event) => {
     setValue(event.target.value);
@@ -25,7 +25,7 @@ export default function Rating({ mangaID }) {
     );
   }
   return (
-    <select onChange={onChange}>
+    <select onChange={onChange} value={value}>
       <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { UserContext } from 'context/UserContext';
+import { useFetchDataApi } from 'hooks';
+
+import MangaListSection from 'components/MangaListSection';
+import MangaItem from 'components/MangaItem';
+
 import FavoriteListSection from './FavoriteListSection';
-import MangaListSection from '../MangaListSection';
-import MangaItem from '../MangaItem';
-import {
-  useFetchDataApi,
-  useFirebaseUser,
-} from '../../hooks';
+
 
 export default function Home() {
-  const user = useFirebaseUser();
-  
+  const user = useContext(UserContext);
 
   const [
     newChapterList,
@@ -21,7 +22,7 @@ export default function Home() {
     newMangaList,
     isNewMangaListLoading,
     isNewMangaListError,
-  ] = useFetchDataApi('/release/manga')
+  ] = useFetchDataApi('/release/manga');
 
   return (
     <React.Fragment>
@@ -46,7 +47,7 @@ export default function Home() {
           ))
         }
       />
-       <MangaListSection
+      <MangaListSection
         isLoading={isNewMangaListLoading}
         isError={isNewMangaListError}
         isRenderListEmpty={newMangaList && newMangaList.length === 0}
@@ -68,4 +69,3 @@ export default function Home() {
     </React.Fragment>
   );
 }
-
