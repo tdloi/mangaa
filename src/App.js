@@ -2,18 +2,19 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import SignIn from './components/SignIn';
-import MangaInfo from './components/MangaInfo';
-import MangaCreate from './components/MangaCreate';
-import Chapter from './components/Chapter';
-import ChapterCreate from './components/ChapterCreate';
-import Wrapper from './components/Wrapper';
-import { NotFound } from './components/Error';
-import { useLocalStorage, useFirebaseUser } from './hooks';
+import Navbar from 'components/Navbar';
+import Home from 'components/Home';
+import SignIn from 'components/SignIn';
+import MangaInfo from 'components/MangaInfo';
+import MangaCreate from 'components/MangaCreate';
+import Chapter from 'components/Chapter';
+import ChapterCreate from 'components/ChapterCreate';
+import Wrapper from 'components/Wrapper';
+import { NotFound } from 'components/Error';
+import { useLocalStorage, useFirebaseUser } from 'hooks';
 
-import { theme } from './theme';
+import { theme } from 'theme';
+import 'sanitize.css';
 import 'typeface-merriweather';
 
 function App() {
