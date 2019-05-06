@@ -1,4 +1,5 @@
 from os import environ
+from urllib.parse import urljoin
 
 from flask_marshmallow import Marshmallow, base_fields
 from marshmallow import pre_dump, pre_load
@@ -18,7 +19,7 @@ class MangaBaseSchema(ma.ModelSchema):
         lambda obj: f"/manga/{obj.id}/{obj._title}"
     )
     cover = base_fields.Function(
-        lambda obj: obj.cover
+        lambda obj: urljoin(environ.get('AWS_S3_HOST'), obj.cover)
         if obj.cover
         else environ.get('MANGA_COVER_PLACEHOLDER', '/manga-cover.png')
     )
@@ -50,6 +51,8 @@ class ImageSchema(ma.ModelSchema):
     class Meta:
         model = Images
         exclude = ('manga',)
+    url = base_fields.Function(
+        lambda obj: urljoin(environ.get('AWS_S3_HOST'), obj.url))
 
 
 class CommentSchema(ma.ModelSchema):
@@ -70,15 +73,15 @@ class ChapterSchema(ma.ModelSchema):
         model = Chapter
         exclude = ('read_by_users', 'lists',)
     vol = base_fields.Function(
-            lambda obj: None
-            if not obj.vol or int(obj.vol) == 0 else (
-                int(obj.vol) if int(obj.vol) == obj.vol else obj.vol
-            )
-          )
+        lambda obj: None
+        if not obj.vol or int(obj.vol) == 0 else (
+            int(obj.vol) if int(obj.vol) == obj.vol else obj.vol
+        )
+    )
     chapter = base_fields.Function(
-                lambda obj: int(obj.chapter)
-                if int(obj.chapter) == obj.chapter else obj.chapter
-             )
+        lambda obj: int(obj.chapter)
+        if int(obj.chapter) == obj.chapter else obj.chapter
+    )
     url = base_fields.Function(lambda obj: f'/chapter/{obj.id}')
     manga = ma.Nested(MangaBaseSchema(only=('title', 'url', 'cover', 'id',)))
 
