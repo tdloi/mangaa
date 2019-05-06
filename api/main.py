@@ -12,6 +12,7 @@ def add_cors(response):
     header = response.headers
     header['Access-Control-Allow-Origin'] = os.environ.get('FLASK_CORS')
     header['Access-Control-Allow-Headers'] = "Authorization, Content-Type, Origin, Accept"
+    header['Access-Control-Expose-Headers'] = 'Location'
     return response
 
 

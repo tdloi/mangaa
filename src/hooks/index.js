@@ -3,6 +3,7 @@ import useLocalStorage from './useLocalStorage';
 import useFirebaseUser from './useFirebaseUser';
 import useKeyDown from './useKeyDown';
 import useScrollPercentage from './useScrollPercentage';
+import useInterval from './useInterval';
 
 export { 
   useFetchDataApi,
@@ -11,4 +12,5 @@ export {
   useFirebaseUser,
   useKeyDown,
   useScrollPercentage,
+  useInterval,
 }

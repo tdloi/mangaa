@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { NotFound } from '../Error';
-import { useFetchGetDataApi, useKeyDown } from '../../hooks';
+import { Link } from 'react-router-dom';
+import 'styled-components/macro';
+
+import { useFetchGetDataApi, useKeyDown } from 'hooks';
+import Image from 'components/Image';
+import { NotFound } from 'components/Error';
+import Wrapper from 'components/Wrapper';
+
 import ChapterHeader from './ChapterHeader';
-import Image from '../Image';
 
 export default function Chapter(props) {
   const chapterID = props.match.params.id;
@@ -53,6 +58,24 @@ export default function Chapter(props) {
 
   return (
     <div>
+      <Wrapper>
+        <div
+          css={`
+            margin-left: 1rem;
+          `}
+        >
+          {chapter && chapter.manga && (
+            <Link
+              css={`
+                text-decoration: none;
+              `}
+              to={chapter.manga.url}
+            >
+              &lt;&lt; Back to manga {chapter.manga.title} page{' '}
+            </Link>
+          )}
+        </div>
+      </Wrapper>
       <ChapterHeader
         onPrev={() => goToChapter(prevChapter, chapter)}
         onNext={() => goToChapter(nextChapter, chapter)}
@@ -62,16 +85,22 @@ export default function Chapter(props) {
           props.history.push(`/chapter/${selectedChapterID}`)
         }
       />
-      {chapter && chapter.lists && chapter.lists.length !== 0
-        ? chapter.lists.map(img => (
-            <Image
-              src={img.url}
-              alt={chapter.title}
-              srcWebp={`${img.url}.webp`}
-              key={img.url}
-            />
-          ))
-        : 'This chapter is empty'}
+      <div
+        css={`
+          background: ${props => props.theme.bgAlt};
+        `}
+      >
+        {chapter && chapter.lists && chapter.lists.length !== 0
+          ? chapter.lists.map(img => (
+              <Image
+                src={img.url}
+                alt={chapter.title}
+                srcWebp={`${img.url}.webp`}
+                key={img.url}
+              />
+            ))
+          : 'This chapter is empty'}
+      </div>
     </div>
   );
 }

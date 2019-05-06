@@ -29,7 +29,8 @@ const StyledInputField = styled.div`
   }
 `;
 
-export default function InputField({ label, field, value, dispatch }) {
+export default function InputField(props) {
+  const { label, field, value, dispatch, ...rest } = props
   return (
     <StyledInputField>
       <label>{label}</label>
@@ -40,6 +41,7 @@ export default function InputField({ label, field, value, dispatch }) {
         onChange={e =>
           dispatch({ field: field, value: e.target.value })
         }
+        {...rest}
       />
     </StyledInputField>
   );

@@ -1,20 +1,36 @@
 import React, { useState, useReducer, useRef, useContext } from 'react';
 
-import { UserIdTokenContext } from 'context/UserIdTokenContext'
+import { UserIdTokenContext } from 'context/UserIdTokenContext';
 import { reducerMessage } from 'reducers/reducerMessage';
+import InputField from 'common/InputField';
+import Wrapper from 'components/Wrapper';
 
-export default function ChapterCreate({ match }) {
-  const mangaID = match.params.id;
-  const [title, setTitle] = useState('');
-  const [vol, setVol] = useState('');
-  const [chapter, setChapter] = useState('');
+import ChapterCreateImageView from './ChapterCreateImageView';
+import ChapterCreatePolling from './ChapterCreatePolling';
+import { StyledChapterCreate } from './style';
+import { reducerForm } from './reducerForm';
+
+export default function ChapterCreate(props) {
+  const mangaID = props.match.params.id;
+  const [formValue, dispatch] = useReducer(reducerForm, {
+    title: '',
+    vol: '',
+    chapter: '',
+  });
   const files = useRef();
   const userToken = useContext(UserIdTokenContext);
-  const [message, dispatch] = useReducer(reducerMessage, {
+  const [message, dispatchMessage] = useReducer(reducerMessage, {
     content: '',
     isSuccess: false,
     isError: false,
   });
+  const [selectedFile, setSelectedFile] = useState([]);
+  const [step, setStep] = useState(1);
+  const [taskID, setTaskID] = useState('');
+
+  if (step === 2) {
+    return <ChapterCreatePolling taskID={taskID} history={props.history} />
+  }
 
   const submitForm = async body => {
     const host = process.env.REACT_APP_API || '';
@@ -27,13 +43,14 @@ export default function ChapterCreate({ match }) {
         body: body,
       });
       if (response.ok) {
-        dispatch({ type: 'success', payload: 'Create new Chapter successful' });
+        setTaskID(response.headers.get('location'));
+        setStep(2);
       } else {
         const res = await response.json();
         throw res.message;
       }
     } catch (err) {
-      dispatch({ type: 'error', payload: err });
+      dispatchMessage({ type: 'error', payload: err });
     }
   };
 
@@ -41,55 +58,77 @@ export default function ChapterCreate({ match }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     formData.append('manga', mangaID);
+    for (const file of files.current.files) {
+      const fileOrder = file.name.match(/\d+/)[0]
+      formData.append(fileOrder, file)
+    }
+    delete formData.content;
     submitForm(formData);
   };
 
+  const handleSelectFile = () => {
+    setSelectedFile([]);
+    const listFiles = Array.from(files.current.files);
+    listFiles.sort((prev, next) => {
+      const prevName = prev.name.match(/\d+/)[0];
+      const nextName = next.name.match(/\d+/)[0];
+      return prevName > nextName
+    })
+    for (const fileObject of listFiles) {
+      const reader = new FileReader();
+      reader.onload = function() {
+        setSelectedFile(files => [...files, reader.result]);
+      };
+      reader.readAsDataURL(fileObject);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>{message.content}</div>
-      <div>
-        <label>Title: </label>
-        <input
-          name="title"
-          type="text"
-          onChange={e => setTitle(e.target.value)}
-          value={title}
-        />
-      </div>
-      <div>
-        <label>Vol: </label>
-        <input
-          name="vol"
-          type="number"
-          step="0.1"
-          onChange={e => setVol(e.target.value)}
-          value={vol}
-        />
-      </div>
-      <div>
-        <label>Chapter: </label>
-        <input
-          name="chapter"
-          type="number"
-          step="0.1"
-          onChange={e => setChapter(e.target.value)}
-          value={chapter}
-        />
-      </div>
-      <div>
-        <label>Chapter images:</label>
-        <input
-          name="content"
-          type="file"
-          ref={files}
-          accept=".jpg,.jpeg,.png,.webp"
-          // onChange={e => {
-          //   setSelectedFile(Array.from(files.current.files));
-          // }}
-          multiple
-        />
-      </div>
-      <input type="submit" value="Create" />
-    </form>
+    <Wrapper>
+      <StyledChapterCreate>
+        <h2>ADD NEW CHAPTER</h2>
+        <div>{message.content}</div>
+        <form onSubmit={handleSubmit}>
+          <InputField
+            label="Title"
+            field="title"
+            value={formValue.title}
+            dispatch={dispatch}
+          />
+          <div className="vol-chapter">
+            <InputField
+              label="Vol"
+              field="vol"
+              value={formValue.vol}
+              dispatch={dispatch}
+              type="number"
+              step="0.1"
+            />
+            <InputField
+              label="Chapter"
+              field="chapter"
+              value={formValue.chapter}
+              dispatch={dispatch}
+              type="number"
+              step="0.1"
+            />
+          </div>
+          <div className="files">
+            <label>
+              <span>Select images to upload </span>
+              <input
+                type="file"
+                ref={files}
+                accept=".jpg,.jpeg,.png,.webp"
+                onChange={handleSelectFile}
+                multiple
+              />
+              <ChapterCreateImageView listImages={selectedFile} />
+            </label>
+          </div>
+          <input type="submit" value="Create" />
+        </form>
+      </StyledChapterCreate>
+    </Wrapper>
   );
 }

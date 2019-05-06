@@ -106,9 +106,10 @@ def create():
 
     bucket_name = environ['AWS_S3_BUCKET']
 
-    list_images = set()
-
-    for image in request.files.values():
+    list_images = list()
+    list_images_name = set()
+    for index in request.files.keys():
+        image = request.files[index]
         _, ext = splitext(image.filename)
         # random a unique images url
         while True:
@@ -116,13 +117,14 @@ def create():
             key = str(manga_id) + '/' + str(chapter.id) + '/' + key
             # Check for exist to avoid override
             i = Images.query.get(key)
-            if not i:
-                list_images.add(key)
+            if not i and (key not in list_images_name):
+                list_images.append(key)
+                list_images_name.add(key)
                 break
 
         image.save(f'/tmp/{key}')
 
-    task = upload_image.delay(list(list_images), chapter.id)
+    task = upload_image.delay(list_images, chapter.id)
     response = make_response()
     response.headers['Location'] = f'api/v1/status/{task.id}'
     return response, 202

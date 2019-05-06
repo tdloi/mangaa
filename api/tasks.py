@@ -1,6 +1,7 @@
 import subprocess
 from os import environ, remove
 from os.path import exists, splitext
+from urllib.parse import urljoin
 
 from celery.task.control import revoke
 from flask import jsonify
@@ -16,7 +17,6 @@ def upload_image(self, list_images, chapter_id):
     Long running task uploads a list of images name (saved to /tmp)
     and add record to Images table
     """
-    bucket_name = environ['AWS_S3_BUCKET']
     total = len(list_images)
     completed_images = set()
 
@@ -35,7 +35,7 @@ def upload_image(self, list_images, chapter_id):
                 'ContentType': f'image/{ext}',
                 'Expires': expires,
             })
-        completed_images.add(name)
+        completed_images.add(urljoin(environ.get('AWS_S3_HOST'), name))
 
         db.session.add(Images(
             url=name,

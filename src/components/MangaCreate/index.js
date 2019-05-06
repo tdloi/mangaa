@@ -9,40 +9,59 @@ import { reducerMessage } from 'reducers/reducerMessage';
 import { reducerForm } from './reducerForm';
 
 const StyledMangaCreate = styled.div`
-  margin: .5rem;;
+  margin: 0.5rem;
   padding: 1.5rem;
-  padding-top: .5rem;
-  color: ${({ theme }) => theme.fg}
+  padding-top: 0.5rem;
+  color: ${({ theme }) => theme.fg};
   background: ${({ theme }) => theme.bg};
   h2 {
     text-align: center;
-    padding-bottom: .5rem;
-    border-bottom: 1px solid ${({ theme }) => theme.shadow}
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid ${({ theme }) => theme.shadow};
   }
   form {
     display: flex;
     flex-direction: column;
-    > div:first-child {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-between;
+  }
+  form > div:first-child {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 
-      div {
-        width: 100%;
-      }
+    div {
+      width: 100%;
+    }
 
-      > label {
-        width: 300px;
-        height: 380px;
-        text-align: center;
-        padding: 1rem;
-      }
-      > label > input {
-        opacity: 0;
-      }
-      > label > img {
-        width: 100%;
-      }
+    > label {
+      width: 300px;
+      height: 380px;
+      text-align: center;
+      padding: 1rem;
+      margin-right: 1rem;
+      border: 2px dashed ${({ theme }) => theme.fg};
+      position: relative;
+    }
+    > label > input {
+      opacity: 0;
+    }
+    > label > img {
+      width: 95%;
+      height: auto;
+      max-height: 95%;
+      position: relative;
+      top: -25px;
+    }
+  }
+  form > input[type='submit'] {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    padding: 0.55rem 1rem;
+    appearance: none;
+    border: 1px solid ${({ theme }) => theme.fg};
+    border-radius: 5px;
+    :hover {
+      border-color: ${({ theme }) => theme.bgAlt};
+      box-shadow: 0 0 2px 0 ${({ theme }) => theme.fgAlt};
     }
   }
 `;
@@ -75,12 +94,13 @@ export default function MangaCreate() {
           type: 'success',
           payload: 'Added new Manga successful',
         });
-        dispatch({ type: 'reset' })
+        dispatch({ type: 'reset' });
       } else {
         const res = await response.json();
         throw res.message;
       }
     } catch (err) {
+      console.log(err);
       dispatchMessage({ type: 'error', payload: err });
     }
   };
@@ -95,9 +115,9 @@ export default function MangaCreate() {
     const reader = new FileReader();
     reader.onload = function() {
       setSelectedFile(reader.result);
-    }
+    };
     reader.readAsDataURL(cover.current.files[0]);
-  }
+  };
 
   return (
     <Wrapper>
@@ -140,7 +160,9 @@ export default function MangaCreate() {
               />
             </div>
             <label>
-              {!selectedFile ? 'Click to upload cover' : 'Click to select another file'}
+              {!selectedFile
+                ? 'Click to upload cover'
+                : 'Click to select another file'}
               <input
                 name="cover"
                 type="file"
@@ -164,9 +186,7 @@ export default function MangaCreate() {
               })
             }
           />
-          <div>
-            <input type="submit" value="Add" />
-          </div>
+          <input type="submit" value="Add new manga" />
         </form>
       </StyledMangaCreate>
     </Wrapper>
