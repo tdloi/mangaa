@@ -1,9 +1,10 @@
 export const theme = {
   dark: {
-    bg: '#21242c',
+    bg: '#3a4149',
     fg: '#d9d9d9',
-    bgAlt: '#282c34',
+    bgAlt: '#2f353a',
     fgAlt: '#e2e2e2',
+    border: '#23282c',
     shadow: '#323536',
     blue: '#3273dc',
     nav: {
@@ -16,10 +17,11 @@ export const theme = {
     }
   },
   light: {
-    bg: '#fdfdfd',
+    bg: '#fefefe',
     fg: '#222',
-    bgAlt: '#fbfbfb',
+    bgAlt: '#ededed',
     fgAlt: '#333',
+    border: '#c8ced3',
     shadow: '#f2f2f2',
     blue: '#3273dc',
     nav: {

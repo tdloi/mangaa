@@ -6,8 +6,7 @@ import Logo from 'components/Logo';
 
 const Wrapper = styled.div`
   ${({ theme }) => `
-    background: ${theme.nav.bg};
-    border-bottom: 2px solid ${theme.shadow};
+    background: ${theme.bg};
   `}
 
   @media (width < 900) {
@@ -18,7 +17,7 @@ const Wrapper = styled.div`
 const StyledNavbar = styled.nav`
   background: transparent;
   color: ${({ theme }) => theme.fg};
-  height: 60px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
