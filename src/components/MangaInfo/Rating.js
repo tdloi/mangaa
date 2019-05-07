@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 
 import { UserIdTokenContext } from 'context/UserIdTokenContext';
 
-export default function Rating({ mangaID }) {
+export default function MangaInfoRating({ mangaID }) {
   const [value, setValue] = useState('')
   const token = useContext(UserIdTokenContext);
 
@@ -10,7 +10,7 @@ export default function Rating({ mangaID }) {
     setValue(event.target.value);
     const host = process.env.REACT_APP_API || '';
 
-    const response = await fetch(
+    fetch(
       host + `/manga/${mangaID}/rating`, 
       {
         method: 'POST',
@@ -26,16 +26,16 @@ export default function Rating({ mangaID }) {
   }
   return (
     <select onChange={onChange} value={value}>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-      <option value="6">6</option>
-      <option value="7">7</option>
-      <option value="8">8</option>
-      <option value="9">9</option>
-      <option value="10">10</option>
+      <option value="1">☆ 1</option>
+      <option value="2">☆ 2</option>
+      <option value="3">☆ 3</option>
+      <option value="4">☆ 4</option>
+      <option value="5">☆ 5</option>
+      <option value="6">☆ 6</option>
+      <option value="7">☆ 7</option>
+      <option value="8">☆ 8</option>
+      <option value="9">☆ 9</option>
+      <option value="10">☆ 10</option>
     </select>
   );
 }

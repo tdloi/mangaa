@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import Message from '../Message';
+
+import Message from 'components/Message';
 
 const StyledMangaInfoChapters = styled.section`
   padding: .5rem 1.5rem;
@@ -36,6 +37,7 @@ export default function MangaInfoChapters(props) {
     return <Message content="This manga has no chapters" />;
   }
   return (
+
     <StyledMangaInfoChapters>
       <h3>Chapter lists</h3>
       {chapters.map(chapter => {
@@ -47,7 +49,7 @@ export default function MangaInfoChapters(props) {
             <Link to={chapter.url}>{title}</Link>
             <div>
               <span>{chapter.user}</span>
-              <span>{chapter.created}</span>{' '}
+              <span>{chapter.created}</span>
             </div>
           </StyledMangaInfoChaptersItem>
         );
