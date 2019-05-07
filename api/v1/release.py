@@ -36,14 +36,17 @@ def get_chapters():
     """
     data = request.get_json()
     per_page = data.get('perPage', 10) if data else 10   # avoid empty json
-    chapters = Chapter.query.order_by(
-                Chapter.created.desc(),
-                Chapter.chapter.desc()
-              ).paginate(
-                  page=g.page,
-                  per_page=per_page,
-                  error_out=False,
-              )
+    chapters = (
+        Chapter.query
+        .order_by(Chapter.manga_id)
+        .distinct(Chapter.manga_id)
+        .from_self()
+        .order_by(Chapter.created.desc())
+        .paginate(
+            page=g.page,
+            per_page=per_page,
+            error_out=False,)
+    )
     if not chapters.items:
         return jsonify({
             'code': 404,
@@ -80,15 +83,19 @@ def get_following():
     """
     list_manga = UsersManga.query.filter(and_(
         UsersManga.user_uid.like(g.uid),
-        UsersManga.subscribed.is_(True),
+        UsersManga.favorited.is_(True),
     )).all()
 
     list_manga_id = [x.mangas.id for x in list_manga]
-    chapters = Chapter.query.filter(
-                    Chapter.manga_id.in_(list_manga_id)
-               ).order_by(
-                    Chapter.created.desc()
-               ).group_by(Chapter.id, Chapter.manga_id).all()
+    chapters = (
+        Chapter.query
+        .filter(Chapter.manga_id.in_(list_manga_id))
+        .order_by(Chapter.manga_id)
+        .distinct(Chapter.manga_id)
+        .from_self()
+        .order_by(Chapter.created.desc())
+        .limit(10).all()
+    )
     if not chapters:
         return jsonify({
             'code': 404,
