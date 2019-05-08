@@ -58,6 +58,8 @@ class ImageSchema(ma.ModelSchema):
 class CommentSchema(ma.ModelSchema):
     class Meta:
         model = Comment
+    user = base_fields.Function(lambda obj: obj.user_uid)
+    created = base_fields.Function(lambda obj: obj.created * 1000)
 
 
 class MangaSchema(MangaBaseSchema):
@@ -84,6 +86,7 @@ class ChapterSchema(ma.ModelSchema):
     )
     url = base_fields.Function(lambda obj: f'/chapter/{obj.id}')
     manga = ma.Nested(MangaBaseSchema(only=('title', 'url', 'cover', 'id',)))
+    created = base_fields.Function(lambda obj: obj.created * 1000)
 
 
 class UserSchema(ma.ModelSchema):

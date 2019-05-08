@@ -264,7 +264,7 @@ def delete_manga(manga_id):
     }), 200
 
 
-@bp.route('/<int:manga_id>/comment')
+@bp.route('/<int:manga_id>/comments')
 @load_manga
 def get_comments(manga_id):
     """
@@ -298,7 +298,7 @@ def get_comments(manga_id):
 @require_token
 def post_comments(manga_id):
     """
-    endpoint: /manga/<manga_id>/comments
+    endpoint: /manga/<manga_id>/comment
     method: POST
     response_type: array
     response:

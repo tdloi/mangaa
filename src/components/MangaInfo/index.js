@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import 'styled-components/macro';
 
 import { UserIdTokenContext } from 'context/UserIdTokenContext';
-import { useFetchDataApi } from 'hooks';
+import { useFetchDataApi, useInterval } from 'hooks';
 
 import Card from 'common/Card';
 import Wrapper from 'components/Wrapper';
@@ -11,6 +11,7 @@ import { ButtonPrimary, ButtonSecondary } from 'common/Button';
 import LoadingAndErrorWrapper from 'components/LoadingAndErrorWrapper';
 import Loading from 'components/Loading';
 import Comment from 'components/Comment';
+import CommentsList from 'components/CommentsList';
 import { NotFound } from 'components/Error';
 
 import MangaInfoSkeleton from './MangaInfoSkeleton';
@@ -28,11 +29,18 @@ export default function MangaInfo({ match }) {
     null,
     ''
   );
+  const [comments, setComments] = useState([]);
+  const [postCommentMessage, setPostCommentMessage] = useState(null);
 
   const [chapters, isLoadingChapters, isLoadChaptersError] = useFetchDataApi(
     `/manga/${mangaId}/chapters`
   );
-
+  const loadComments = async () => {
+    const host = process.env.REACT_APP_API || '';
+    const response = await fetch(host + `/manga/${mangaId}/comments`);
+    const commentsList = await response.json();
+    setComments(commentsList);
+  };
   const loadFavorite = async (method = 'POST') => {
     const host = process.env.REACT_APP_API || '';
     const response = await fetch(host + `/manga/${mangaId}/favorite`, {
@@ -49,7 +57,22 @@ export default function MangaInfo({ match }) {
 
   useEffect(() => {
     loadFavorite('GET');
-  });
+    loadComments();
+  }, []);
+
+  useInterval(() => {
+    setPostCommentMessage(null);
+  }, 5000);
+
+  const onCommentSuccess = () => {
+    setPostCommentMessage('Post new comment successful')
+    loadComments();
+  }
+
+  const onCommentFailure = (message) => {
+    const errorMessage = 'Something went wrong. Please try again' || message;
+    setPostCommentMessage(errorMessage);
+  }
 
   return (
     <LoadingAndErrorWrapper
@@ -59,7 +82,14 @@ export default function MangaInfo({ match }) {
       renderIsError={<NotFound />}
     >
       <MangaInfoSkeleton manga={manga}>
-        <div css={`display: flex; button { margin-right: 1rem;}`}>
+        <div
+          css={`
+            display: flex;
+            button {
+              margin-right: 1rem;
+            }
+          `}
+        >
           {!favorite ? (
             <ButtonPrimary onClick={() => loadFavorite()}>
               Favorite
@@ -83,7 +113,14 @@ export default function MangaInfo({ match }) {
           <Card>
             <MangaInfoChapters chapters={chapters} />
             <hr />
-            <Comment match={match} />
+            <h3>Comments:</h3>
+            <span>{postCommentMessage}</span>
+            <Comment
+              match={match}
+              onSuccess={() => onCommentSuccess()}
+              onFailure={(message) => onCommentFailure(message)}
+            />
+            <CommentsList comments={comments} />
           </Card>
         </Wrapper>
       </LoadingAndErrorWrapper>

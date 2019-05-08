@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import { ThemeProvider } from 'styled-components';
 import { MemoryRouter, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 import { theme } from 'theme';
 import 'sanitize.css'

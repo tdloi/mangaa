@@ -11,18 +11,20 @@
     "@material-ui/core": "^3.9.3",
     "abortcontroller-polyfill": "^1.2.9",
     "firebase": "^5.9.3",
+    "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-firebaseui": "^3.1.2",
     "react-router-dom": "^5.0.0",
+    "react-rte": "^0.16.1",
     "react-scripts": "3.0.0",
     "react-textarea-autosize": "^7.1.0",
     "sanitize.css": "^8.0.0",
     "styled-components": "^4.1.3",
-    "typeface-merriweather": "^0.0.72",
-    "typeface-satisfy": "^0.0.72"
+    "timeago.js": "^4.0.0-beta.2",
+    "typeface-merriweather": "^0.0.72"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { format } from 'timeago.js';
 
 import Message from 'components/Message';
 
@@ -49,7 +50,7 @@ export default function MangaInfoChapters(props) {
             <Link to={chapter.url}>{title}</Link>
             <div>
               <span>{chapter.user}</span>
-              <span>{chapter.created}</span>
+              <span>{format(chapter.created)}</span>
             </div>
           </StyledMangaInfoChaptersItem>
         );
