@@ -6,9 +6,10 @@
   + [GET](#GET-manga<manga_id>)
 - [`/manga/<manga_id>/chapters`](#manga<manga_id>chapters)
   + [GET](#GET-manga<manga_id>chapters)
+- [`/manga/<manga_id>/comment`](#manga<manga_id>comment)
+  + [POST](#POST-manga<manga_id>comment)
 - [`/manga/<manga_id>/comments`](#manga<manga_id>comments)
   + [GET](#GET-manga<manga_id>comments)
-  + [POST](#POST-manga<manga_id>comments)
 - [`/manga/<manga_id>/favorite`](#manga<manga_id>favorite)
   + [GET](#GET-manga<manga_id>favorite)
   + [POST](#POST-manga<manga_id>favorite)
@@ -232,7 +233,7 @@ Uploaded cover is not in list allowed extension file
 }
 ```
 
-## GET `/manga/<manga_id>/comments`
+## POST `/manga/<manga_id>/comment`
 
 ### Param
 
@@ -269,7 +270,7 @@ Uploaded cover is not in list allowed extension file
 }
 ```
 
-## POST `/manga/<manga_id>/comments`
+## GET `/manga/<manga_id>/comments`
 
 ### Param
 
