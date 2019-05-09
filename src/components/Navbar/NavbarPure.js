@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
+import { Button, ButtonPrimary, ButtonSecondary } from 'common/Button';
 import Logo from 'components/Logo';
 
 const Wrapper = styled.div`
@@ -34,22 +37,9 @@ const StyledNavbar = styled.nav`
   }
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  padding: .5rem 1rem;
-  border: 1px solid #1abc9c;
-  border-radius: 5px;
-  background: #1abc9c;
-  color: #ecf0f1;
-  :hover {
-    box-shadow: 0 0 2px 0 ${({ theme }) => theme.fgAlt};
-  }
-`
-
-const SignOutLink = styled(StyledLink)`
-  background: tomato;
-  border: 1px solid tomato;
-  color: #333;
+const ButtonAdd = styled(ButtonPrimary)`
+  background: #63c2de;
+  color: ${({ theme }) => theme.fg};
 `
 
 export default function NavbarPure(props) {
@@ -57,16 +47,19 @@ export default function NavbarPure(props) {
   return (
     <Wrapper>
       <StyledNavbar>
-        <Logo />
+        <div>
+          <Logo />
+          <ButtonAdd as={Link} to="/manga/new"><FontAwesomeIcon icon={faPlus} />Manga</ButtonAdd>
+        </div>
         <div>
           {props.user ? (
-            <SignOutLink to="#" onClick={props.signOut}>
+            <ButtonSecondary as={Link} to="#" onClick={props.signOut}>
               Sign out
-            </SignOutLink>
+            </ButtonSecondary>
           ) : (
-            <StyledLink to="/signin">
+            <ButtonPrimary as={Link} to="/signin">
               Sign in
-            </StyledLink>
+            </ButtonPrimary>
           )}
         </div>
       </StyledNavbar>

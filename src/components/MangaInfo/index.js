@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
+import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 import 'styled-components/macro';
 
 import { UserIdTokenContext } from 'context/UserIdTokenContext';
@@ -17,7 +19,10 @@ import { NotFound } from 'components/Error';
 import MangaInfoSkeleton from './MangaInfoSkeleton';
 import MangaInfoChapters from './MangaInfoChapters';
 import Rating from './Rating';
-
+const ButtonAdd = styled(ButtonPrimary)`
+  background: #63c2de;
+  color: ${({ theme }) => theme.fg};
+`
 export default function MangaInfo({ match }) {
   const mangaId = match.params.id;
   const token = useContext(UserIdTokenContext);
@@ -100,6 +105,7 @@ export default function MangaInfo({ match }) {
             </ButtonSecondary>
           )}
           <Rating />
+          <ButtonAdd as={Link} to={`/manga/new/${mangaId}`}>Thêm chapter</ButtonAdd>
         </div>
       </MangaInfoSkeleton>
 
