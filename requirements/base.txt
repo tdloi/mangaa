@@ -5,54 +5,169 @@
 #    pip-compile requirements/base.in
 #
 alembic==1.0.8
-amqp==2.4.2               # via kombu
-billiard==3.5.0.5         # via celery
+    # via -r base.in
+amqp==5.0.9
+    # via kombu
+billiard==3.6.4.0
+    # via celery
 boto3==1.9.115
-botocore==1.12.115        # via boto3, s3transfer
-cachecontrol==0.12.5      # via firebase-admin
-cachetools==3.1.0         # via google-auth
-celery==4.2
-certifi==2018.11.29       # via requests
-chardet==3.0.4            # via requests
-click==7.0                # via flask
-docutils==0.14            # via botocore
+    # via -r base.in
+botocore==1.12.115
+    # via
+    #   boto3
+    #   s3transfer
+cachecontrol==0.12.5
+    # via firebase-admin
+cachetools==3.1.0
+    # via google-auth
+celery==5.2.2
+    # via -r base.in
+certifi==2018.11.29
+    # via requests
+chardet==3.0.4
+    # via requests
+click==8.0.3
+    # via
+    #   celery
+    #   click-didyoumean
+    #   click-plugins
+    #   click-repl
+    #   flask
+click-didyoumean==0.3.0
+    # via celery
+click-plugins==1.1.1
+    # via celery
+click-repl==0.2.0
+    # via celery
+docutils==0.14
+    # via botocore
 faker==1.0.2
+    # via -r base.in
 firebase-admin==2.16.0
-flask-marshmallow==0.9.0
-flask-sqlalchemy==2.3.2
+    # via -r base.in
 flask==1.0.2
-google-api-core[grpc]==1.8.0  # via firebase-admin, google-cloud-core, google-cloud-firestore, google-cloud-storage
-google-auth==1.6.3        # via google-api-core
-google-cloud-core==0.29.1  # via google-cloud-firestore, google-cloud-storage
-google-cloud-firestore==0.31.0  # via firebase-admin
-google-cloud-storage==1.14.0  # via firebase-admin
-google-resumable-media==0.3.2  # via google-cloud-storage
-googleapis-common-protos==1.5.8  # via google-api-core
-grpcio==1.19.0            # via google-api-core
-idna==2.8                 # via requests
-itsdangerous==1.1.0       # via flask
-jinja2==2.10.1            # via flask
-jmespath==0.9.4           # via boto3, botocore
-kombu==4.4.0              # via celery
-mako==1.0.7               # via alembic
-markupsafe==1.1.1         # via jinja2, mako
+    # via
+    #   -r base.in
+    #   flask-marshmallow
+    #   flask-sqlalchemy
+flask-marshmallow==0.9.0
+    # via -r base.in
+flask-sqlalchemy==2.3.2
+    # via -r base.in
+google-api-core[grpc]==1.8.0
+    # via
+    #   firebase-admin
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-auth==1.6.3
+    # via google-api-core
+google-cloud-core==0.29.1
+    # via
+    #   google-cloud-firestore
+    #   google-cloud-storage
+google-cloud-firestore==0.31.0
+    # via firebase-admin
+google-cloud-storage==1.14.0
+    # via firebase-admin
+google-resumable-media==0.3.2
+    # via google-cloud-storage
+googleapis-common-protos==1.5.8
+    # via google-api-core
+grpcio==1.19.0
+    # via google-api-core
+idna==2.8
+    # via requests
+itsdangerous==1.1.0
+    # via flask
+jinja2==2.10.1
+    # via flask
+jmespath==0.9.4
+    # via
+    #   boto3
+    #   botocore
+kombu==5.2.3
+    # via celery
+mako==1.0.7
+    # via alembic
+markupsafe==1.1.1
+    # via
+    #   jinja2
+    #   mako
+marshmallow==2.18.1
+    # via
+    #   flask-marshmallow
+    #   marshmallow-sqlalchemy
 marshmallow-sqlalchemy==0.15.0
-marshmallow==2.18.1       # via flask-marshmallow, marshmallow-sqlalchemy
-msgpack==0.6.1            # via cachecontrol
-protobuf==3.7.0           # via google-api-core, googleapis-common-protos
+    # via -r base.in
+msgpack==0.6.1
+    # via cachecontrol
+prompt-toolkit==3.0.24
+    # via click-repl
+protobuf==3.7.0
+    # via
+    #   google-api-core
+    #   googleapis-common-protos
 psycopg2==2.7.7
-pyasn1-modules==0.2.4     # via google-auth
-pyasn1==0.4.5             # via pyasn1-modules, rsa
-python-dateutil==2.8.0    # via alembic, botocore, faker
-python-editor==1.0.4      # via alembic
-pytz==2018.9              # via celery, google-api-core, google-cloud-firestore
+    # via -r base.in
+pyasn1==0.4.5
+    # via
+    #   pyasn1-modules
+    #   rsa
+pyasn1-modules==0.2.4
+    # via google-auth
+python-dateutil==2.8.0
+    # via
+    #   alembic
+    #   botocore
+    #   faker
+python-editor==1.0.4
+    # via alembic
+pytz==2018.9
+    # via
+    #   celery
+    #   google-api-core
+    #   google-cloud-firestore
 redis==3.2.1
+    # via -r base.in
 requests==2.21.0
-rsa==4.0                  # via google-auth
-s3transfer==0.2.0         # via boto3
-six==1.12.0               # via faker, firebase-admin, flask-marshmallow, google-api-core, google-auth, google-resumable-media, grpcio, protobuf, python-dateutil
-sqlalchemy==1.3.0         # via alembic, flask-sqlalchemy, marshmallow-sqlalchemy
-text-unidecode==1.2       # via faker
-urllib3==1.24.2           # via botocore, requests
-vine==1.2.0               # via amqp
-werkzeug==0.15.3          # via flask
+    # via
+    #   -r base.in
+    #   cachecontrol
+    #   google-api-core
+rsa==4.0
+    # via google-auth
+s3transfer==0.2.0
+    # via boto3
+six==1.12.0
+    # via
+    #   click-repl
+    #   faker
+    #   firebase-admin
+    #   flask-marshmallow
+    #   google-api-core
+    #   google-auth
+    #   google-resumable-media
+    #   grpcio
+    #   protobuf
+    #   python-dateutil
+sqlalchemy==1.3.0
+    # via
+    #   alembic
+    #   flask-sqlalchemy
+    #   marshmallow-sqlalchemy
+text-unidecode==1.2
+    # via faker
+urllib3==1.24.2
+    # via
+    #   botocore
+    #   requests
+vine==5.0.0
+    # via
+    #   amqp
+    #   celery
+    #   kombu
+wcwidth==0.2.5
+    # via prompt-toolkit
+werkzeug==0.15.3
+    # via flask
