@@ -5,61 +5,232 @@
 #    pip-compile requirements/dev.in
 #
 alembic==1.0.8
+    # via -r base.txt
 amqp==2.4.2
-atomicwrites==1.3.0       # via pytest
-attrs==19.1.0             # via pytest
+    # via
+    #   -r base.txt
+    #   kombu
+atomicwrites==1.3.0
+    # via pytest
+attrs==19.1.0
+    # via pytest
 billiard==3.5.0.5
+    # via
+    #   -r base.txt
+    #   celery
 boto3==1.9.115
+    # via -r base.txt
 botocore==1.12.115
+    # via
+    #   -r base.txt
+    #   boto3
+    #   s3transfer
 cachecontrol==0.12.5
+    # via
+    #   -r base.txt
+    #   firebase-admin
 cachetools==3.1.0
+    # via
+    #   -r base.txt
+    #   google-auth
 celery==4.2
+    # via -r base.txt
 certifi==2018.11.29
+    # via
+    #   -r base.txt
+    #   requests
 chardet==3.0.4
+    # via
+    #   -r base.txt
+    #   requests
 click==7.0
+    # via
+    #   -r base.txt
+    #   flask
 docutils==0.14
+    # via
+    #   -r base.txt
+    #   botocore
 faker==1.0.2
+    # via -r base.txt
 firebase-admin==2.16.0
-flask-marshmallow==0.9.0
-flask-sqlalchemy==2.3.2
+    # via -r base.txt
 flask==1.0.2
+    # via
+    #   -r base.txt
+    #   flask-marshmallow
+    #   flask-sqlalchemy
+flask-marshmallow==0.9.0
+    # via -r base.txt
+flask-sqlalchemy==2.3.2
+    # via -r base.txt
 google-api-core[grpc]==1.8.0
+    # via
+    #   -r base.txt
+    #   firebase-admin
+    #   google-cloud-core
+    #   google-cloud-firestore
+    #   google-cloud-storage
 google-auth==1.6.3
+    # via
+    #   -r base.txt
+    #   google-api-core
 google-cloud-core==0.29.1
+    # via
+    #   -r base.txt
+    #   google-cloud-firestore
+    #   google-cloud-storage
 google-cloud-firestore==0.31.0
+    # via
+    #   -r base.txt
+    #   firebase-admin
 google-cloud-storage==1.14.0
+    # via
+    #   -r base.txt
+    #   firebase-admin
 google-resumable-media==0.3.2
+    # via
+    #   -r base.txt
+    #   google-cloud-storage
 googleapis-common-protos==1.5.8
+    # via
+    #   -r base.txt
+    #   google-api-core
 grpcio==1.19.0
+    # via
+    #   -r base.txt
+    #   google-api-core
 gunicorn==19.9.0
+    # via -r dev.in
 idna==2.8
+    # via
+    #   -r base.txt
+    #   requests
 itsdangerous==1.1.0
+    # via
+    #   -r base.txt
+    #   flask
 jinja2==2.10.1
+    # via
+    #   -r base.txt
+    #   flask
 jmespath==0.9.4
+    # via
+    #   -r base.txt
+    #   boto3
+    #   botocore
 kombu==4.4.0
+    # via
+    #   -r base.txt
+    #   celery
 mako==1.0.7
+    # via
+    #   -r base.txt
+    #   alembic
 markupsafe==1.1.1
-marshmallow-sqlalchemy==0.15.0
+    # via
+    #   -r base.txt
+    #   jinja2
+    #   mako
 marshmallow==2.18.1
-more-itertools==6.0.0     # via pytest
+    # via
+    #   -r base.txt
+    #   flask-marshmallow
+    #   marshmallow-sqlalchemy
+marshmallow-sqlalchemy==0.15.0
+    # via -r base.txt
+more-itertools==6.0.0
+    # via pytest
 msgpack==0.6.1
-pluggy==0.9.0             # via pytest
-protobuf==3.7.0
+    # via
+    #   -r base.txt
+    #   cachecontrol
+pluggy==0.9.0
+    # via pytest
+protobuf==3.15.0
+    # via
+    #   -r base.txt
+    #   google-api-core
+    #   googleapis-common-protos
 psycopg2==2.7.7
-py==1.8.0                 # via pytest
-pyasn1-modules==0.2.4
+    # via -r base.txt
+py==1.8.0
+    # via pytest
 pyasn1==0.4.5
+    # via
+    #   -r base.txt
+    #   pyasn1-modules
+    #   rsa
+pyasn1-modules==0.2.4
+    # via
+    #   -r base.txt
+    #   google-auth
 pytest==4.3.0
+    # via -r dev.in
 python-dateutil==2.8.0
+    # via
+    #   -r base.txt
+    #   alembic
+    #   botocore
+    #   faker
 python-editor==1.0.4
+    # via
+    #   -r base.txt
+    #   alembic
 pytz==2018.9
+    # via
+    #   -r base.txt
+    #   celery
+    #   google-api-core
+    #   google-cloud-firestore
 redis==3.2.1
+    # via -r base.txt
 requests==2.21.0
+    # via
+    #   -r base.txt
+    #   cachecontrol
+    #   google-api-core
 rsa==4.0
+    # via
+    #   -r base.txt
+    #   google-auth
 s3transfer==0.2.0
+    # via
+    #   -r base.txt
+    #   boto3
 six==1.12.0
+    # via
+    #   -r base.txt
+    #   faker
+    #   firebase-admin
+    #   flask-marshmallow
+    #   google-api-core
+    #   google-auth
+    #   google-resumable-media
+    #   grpcio
+    #   protobuf
+    #   pytest
+    #   python-dateutil
 sqlalchemy==1.3.0
+    # via
+    #   -r base.txt
+    #   alembic
+    #   flask-sqlalchemy
+    #   marshmallow-sqlalchemy
 text-unidecode==1.2
+    # via
+    #   -r base.txt
+    #   faker
 urllib3==1.24.2
+    # via
+    #   -r base.txt
+    #   botocore
+    #   requests
 vine==1.2.0
+    # via
+    #   -r base.txt
+    #   amqp
 werkzeug==0.15.3
+    # via
+    #   -r base.txt
+    #   flask
